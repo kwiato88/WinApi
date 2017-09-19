@@ -1,3 +1,4 @@
+//This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #ifndef SELECT_PATHS_DIALOG_H
 #define SELECT_PATHS_DIALOG_H
 
