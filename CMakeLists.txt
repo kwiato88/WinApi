@@ -4,11 +4,6 @@ project(WinApi)
 
 add_definitions(-DUNICODE -D_UNICODE)
 
-#include_directories(
-#    Include
-#    D:/boost_1_61_0
-#)
-
 add_library(
     winApiUtils
     STATIC
