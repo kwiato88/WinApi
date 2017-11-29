@@ -15,9 +15,6 @@ namespace WinApi
 class GridDialog : public Dialog
 {
 public:
-    static const int BUTTON_OK = 1;
-    static const int BUTTON_CANCEL = 0;
-
     GridDialog(InstanceHandle p_hInstance, Handle p_parentWindow);
 
     void setTitles(const std::vector<std::string>& p_titles);

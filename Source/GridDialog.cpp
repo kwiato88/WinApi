@@ -36,13 +36,13 @@ void GridDialog::onInit()
 void GridDialog::onOkClick()
 {
     m_selectedItemIndex = m_gridControl.getSelectedRowIndex();
-    close(BUTTON_OK);
+    close(RESULT_OK);
 }
 
 void GridDialog::onCancleClick()
 {
     m_selectedItemIndex = -1;
-    close(BUTTON_CANCEL);
+    close(RESULT_CANCEL);
 }
 
 void GridDialog::onGridDoubleClick()

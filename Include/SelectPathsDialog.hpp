@@ -21,9 +21,6 @@ class SelectPathsDialog : public Dialog
 {
 
 public:
-    static const int BUTTON_OK = 1;
-    static const int BUTTON_CANCEL = 0;
-
     SelectPathsDialog(
         InstanceHandle p_hInstance,
         Handle p_parentWindow);

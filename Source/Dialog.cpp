@@ -1,5 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
+#include <boost/lexical_cast.hpp>
 #include "Dialog.hpp"
+#include "WinApiLastErrorException.hpp"
 
 namespace WinApi
 {
@@ -82,13 +84,16 @@ BOOL Dialog::dispatchNotifyMsg(LPARAM p_lParam)
 
 int Dialog::show()
 {
-    return DialogBoxParam(
+    auto exitCode = DialogBoxParam(
         m_hInstance,                     // app instance: HISTANCE
         MAKEINTRESOURCE( m_resourceId ), // dialog template id
         m_parent,                        // parent: HWND
         DialogFun,                       // dialog func
         reinterpret_cast<LPARAM>(this)
     );
+	if (exitCode == -1 || exitCode == 0)
+		throw LastErrorException("Failed to show dialog. Exit code: " + boost::lexical_cast<std::string>(exitCode));
+	return exitCode;
 }
 
 void Dialog::close(int p_returnCode)

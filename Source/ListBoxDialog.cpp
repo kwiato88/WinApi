@@ -93,13 +93,13 @@ void ListBoxDialog::setListBoxItems()
 
 void ListBoxDialog::onOkClick()
 {
-    close(BUTTON_OK);
+    close(RESULT_OK);
 }
 
 void ListBoxDialog::onCancleClick()
 {
     m_selectedItemIndex = -1;
-    close(BUTTON_CANCEL);
+    close(RESULT_CANCEL);
 }
 
 void ListBoxDialog::onListUpdate()
@@ -110,7 +110,7 @@ void ListBoxDialog::onListUpdate()
 void ListBoxDialog::onListDoubleClick()
 {
     onListUpdate();
-    close(BUTTON_OK);
+    close(RESULT_OK);
 }
 
 int ListBoxDialog::getSelectedItemIndex() const

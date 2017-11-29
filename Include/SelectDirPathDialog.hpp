@@ -10,9 +10,6 @@ namespace WinApi
 class SelectDirPathDialog
 {
 public:
-	static const int BUTTON_OK = 1;
-	static const int BUTTON_CANCEL = 0;
-
 	SelectDirPathDialog(Handle p_parrent, const std::string& p_comment, const std::string& p_initialDir);
 	int show();
 	std::string getSelectedPath();

@@ -30,13 +30,13 @@ void TreeDialog::onInit()
 void TreeDialog::onOkClick()
 {
 	m_selectedItemUserContext = m_tree.getSelectedItemContext();
-    close(BUTTON_OK);
+    close(RESULT_OK);
 }
 
 void TreeDialog::onCancleClick()
 {
 	m_selectedItemUserContext = nullptr;
-    close(BUTTON_CANCEL);
+    close(RESULT_CANCEL);
 }
 
 void TreeDialog::setTreeNodes(const std::vector<Node>& p_tree)

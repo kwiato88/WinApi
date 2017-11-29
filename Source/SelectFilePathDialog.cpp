@@ -1,6 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <Shlobj.h>
 #include "SelectFilePathDialog.hpp"
+#include "Dialog.hpp"
 
 namespace WinApi
 {
@@ -35,11 +36,11 @@ int SelectFilePathDialog::show()
 		char l_filePathBuff[_MAX_PATH];
 		wcstombs(l_filePathBuff, l_filePath, _MAX_PATH - 1);
 		m_selectedPath = l_filePathBuff;
-		return BUTTON_OK;
+		return Dialog::RESULT_OK;
 	}
 	
 	m_selectedPath = std::string();
-	return BUTTON_CANCEL;
+	return Dialog::RESULT_CANCEL;
 }
 
 std::string SelectFilePathDialog::getSelectedPath()

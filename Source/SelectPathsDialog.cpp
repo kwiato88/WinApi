@@ -55,13 +55,13 @@ void SelectPathsDialog<selector>::onInit()
 template <SelectorType selector>
 void SelectPathsDialog<selector>::onOkClick()
 {
-    close(BUTTON_OK);
+    close(RESULT_OK);
 }
 
 template <SelectorType selector>
 void SelectPathsDialog<selector>::onCancleClick()
 {
-    close(BUTTON_CANCEL);
+    close(RESULT_CANCEL);
 }
 
 template <SelectorType selector>

@@ -14,9 +14,6 @@ namespace WinApi
 class ListBoxDialog : public Dialog
 {// TODO: refactor to use edit control
 public:
-    static const int BUTTON_OK = 1;
-    static const int BUTTON_CANCEL = 0;
-
     ListBoxDialog(InstanceHandle p_hInstance, Handle p_parentWindow);
 
     int getSelectedItemIndex() const;

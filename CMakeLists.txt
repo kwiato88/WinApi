@@ -22,6 +22,7 @@ add_library(
     Source/ControlTree.cpp
     Source/WinApiDirPathGetter.cpp
     Source/WinApiFilePathGetter.cpp
+    Source/WinApiLastErrorException.cpp
 )
 
 target_include_directories(

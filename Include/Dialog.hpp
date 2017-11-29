@@ -17,9 +17,15 @@ public:
     typedef std::function<bool(WORD p_msgCode, WORD p_msgValue)> CommandMsgMatcher;
     typedef std::function<bool(LPARAM p_lParam)> NotifyMsgMatcher;
     typedef std::function<void()> MsgHandler;
+	
+	static const int RESULT_OK = 2;
+	static const int RESULT_CANCEL = 1;
 
     Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId);
     virtual ~Dialog() {}
+	/**
+	* @throws LastErrorException
+	*/
     int show();
 
 protected:
