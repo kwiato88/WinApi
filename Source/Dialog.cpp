@@ -96,6 +96,12 @@ void Dialog::close(int p_returnCode)
     EndDialog(m_self, p_returnCode);
 }
 
+void Dialog::redraw()
+{
+	InvalidateRect(m_self, NULL, true);
+	UpdateWindow(m_self);
+}
+
 Handle Dialog::getItem(ResourceId p_itemId)
 {
     return Handle(GetDlgItem(m_self, p_itemId));

@@ -27,6 +27,7 @@ protected:
     void registerHandler(NotifyMsgMatcher p_matcher, MsgHandler p_handler);
 
     void close(int p_returnCode);
+	void redraw();
 	Handle getItem(ResourceId p_itemId);
 	static Handle getFocus();
 
