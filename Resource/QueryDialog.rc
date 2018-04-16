@@ -1,0 +1,17 @@
+//This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
+#include <windows.h>
+#include <commctrl.h>
+#include <richedit.h>
+#include "QueryDialogDef.h"
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+ID_QUERY_DIALOG DIALOG 0, 0, 186, 57
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VISIBLE | WS_POPUP | WS_SYSMENU
+CAPTION "Query"
+FONT 8, "Ms Shell Dlg"
+{
+    LTEXT           "Static", ID_QUESTION_TXT, 6, 6, 135, 9, SS_LEFT, WS_EX_LEFT
+    PUSHBUTTON      "Cancel", IDCANCEL, 129, 38, 50, 14, 0, WS_EX_LEFT
+    EDITTEXT        ID_RESPONSE_TXT, 6, 20, 173, 13, ES_AUTOHSCROLL, WS_EX_LEFT
+    DEFPUSHBUTTON   "OK", IDOK, 75, 38, 50, 14, 0, WS_EX_LEFT
+}

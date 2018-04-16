@@ -12,6 +12,7 @@ add_library(
     Source/ListBoxDialog.cpp
     Source/GridDialog.cpp
     Source/TreeDialog.cpp
+    Source/QueryDialog.cpp
     Source/SelectPathsDialog.cpp
     Source/SelectDirPathDialog.cpp
     Source/SelectFilePathDialog.cpp
@@ -20,6 +21,7 @@ add_library(
     Source/ControlEdit.cpp
     Source/ControlCheckBox.cpp
     Source/ControlTree.cpp
+    Source/ControlText.cpp
     Source/WinApiDirPathGetter.cpp
     Source/WinApiFilePathGetter.cpp
     Source/WinApiLastErrorException.cpp
