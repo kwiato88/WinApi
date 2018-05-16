@@ -32,6 +32,7 @@ protected:
     void registerHandler(CommandMsgMatcher p_matcher, MsgHandler p_handler);
     void registerHandler(NotifyMsgMatcher p_matcher, MsgHandler p_handler);
 
+	void setTitle(const std::string& p_title);
     void close(int p_returnCode);
 	void redraw();
 	Handle getItem(ResourceId p_itemId);

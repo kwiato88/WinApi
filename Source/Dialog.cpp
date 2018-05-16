@@ -107,6 +107,13 @@ void Dialog::redraw()
 	UpdateWindow(m_self);
 }
 
+void Dialog::setTitle(const std::string& p_title)
+{
+	TCHAR title[_MAX_PATH] = TEXT("");
+	mbstowcs(title, p_title.c_str(), _MAX_PATH - 1);
+	SetWindowText(m_self, title);
+}
+
 Handle Dialog::getItem(ResourceId p_itemId)
 {
     return Handle(GetDlgItem(m_self, p_itemId));
