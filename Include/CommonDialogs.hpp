@@ -7,3 +7,4 @@
 #include "SelectFilePathDialog.hpp"
 #include "SelectPathsDialog.hpp"
 #include "TreeDialog.hpp"
+#include "QueryDialog.hpp"
