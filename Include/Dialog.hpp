@@ -21,7 +21,7 @@ public:
 	static const int RESULT_OK = 2;
 	static const int RESULT_CANCEL = 1;
 
-    Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId);
+    Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId, const std::string& p_title = "");
     virtual ~Dialog() {}
 	/**
 	* @throws LastErrorException
@@ -52,6 +52,7 @@ private:
     BOOL dispatchNotifyMsg(LPARAM p_lParam);
     virtual void onInit() = 0;
 
+	std::string m_defaultTitle;
 	const ResourceId m_resourceId;
     CommandHandlersContainer m_commandMsgHandlers;
     NotifyHandlersContainer m_notifyMsgHandlers;

@@ -15,7 +15,7 @@ namespace WinApi
 class GridDialog : public Dialog
 {
 public:
-    GridDialog(InstanceHandle p_hInstance, Handle p_parentWindow);
+    GridDialog(InstanceHandle p_hInstance, Handle p_parentWindow, const std::string& p_title = "");
 
     void setTitles(const std::vector<std::string>& p_titles);
     void setContent(const std::vector<std::vector<std::string> >& p_data);

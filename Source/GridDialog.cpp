@@ -14,9 +14,10 @@ namespace WinApi
 {
 
 GridDialog::GridDialog(
-        InstanceHandle p_hInstance,
-        Handle p_parentparentWindow)
- : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_GRID_DIALOG)),
+	InstanceHandle p_hInstance,
+	Handle p_parentparentWindow,
+	const std::string& p_title)
+ : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_GRID_DIALOG), p_title),
    m_selectedItemIndex(-1)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&GridDialog::onOkClick, this));

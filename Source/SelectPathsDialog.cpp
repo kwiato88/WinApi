@@ -17,12 +17,16 @@ template <>
 struct SelectorTypeTraits<SelectorType::Directory>
 {
     typedef WinApi::DirPathGetter SelectorType;
+	static std::string dialogTitle() { return "Select folders"; }
+	static std::string itemName() { return "folder"; }
 };
 
 template <>
 struct SelectorTypeTraits<SelectorType::File>
 {
     typedef WinApi::FilePathGetter SelectorType;
+	static std::string dialogTitle() { return "Select files"; }
+	static std::string itemName() { return "file"; }
 };
 
 using boost::assign::list_of;
@@ -44,6 +48,7 @@ SelectPathsDialog<selector>::SelectPathsDialog(
 template <SelectorType selector>
 void SelectPathsDialog<selector>::onInit()
 {
+	setTitle(SelectorTypeTraits<selector>::dialogTitle());
     //m_itemsControl.init(m_self, m_hInstance, 12, 74, 362, 200);
     m_itemsControl.init(getItem(ResourceId(ID_SELECT_PATHS_DIALOG_GRID)));
     m_itemsControl.addColumns(list_of("Path"));
@@ -84,7 +89,8 @@ template <SelectorType selector>
 void SelectPathsDialog<selector>::onSelectClick()
 {
     typedef SelectorTypeTraits<selector>::SelectorType SelectorType;
-    std::string l_path = SelectorType(m_self).getPath("Select path", m_item.getContent());
+    std::string l_path = SelectorType(m_self).getPath(
+		std::string("Select " + SelectorTypeTraits<selector>::itemName()), m_item.getContent());
     if(!l_path.empty())
         m_item.setContent(l_path);
 }

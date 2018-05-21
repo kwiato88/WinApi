@@ -12,8 +12,9 @@ namespace WinApi
 
 TreeDialog::TreeDialog(
         InstanceHandle p_hInstance,
-        Handle p_parentWindow)
- : Dialog(p_hInstance, p_parentWindow, ResourceId(ID_TREE_DIALOG)),
+        Handle p_parentWindow,
+		const std::string& p_title)
+ : Dialog(p_hInstance, p_parentWindow, ResourceId(ID_TREE_DIALOG), p_title),
 	m_selectedItemUserContext(nullptr)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&TreeDialog::onOkClick, this));

@@ -14,7 +14,7 @@ namespace WinApi
 class TreeDialog : public Dialog
 {
 public:
-    TreeDialog(InstanceHandle p_hInstance, Handle p_parentWindow);
+    TreeDialog(InstanceHandle p_hInstance, Handle p_parentWindow, const std::string& p_title = "Select tree item");
 
 	void setTreeNodes(const std::vector<Node>& p_tree);
 

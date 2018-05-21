@@ -51,9 +51,10 @@ struct StringLengthComparator
 }
 
 ListBoxDialog::ListBoxDialog(
-        InstanceHandle p_hInstance,
-        Handle p_parentparentWindow)
- : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_LIST_BOX_DIALOG)),
+	InstanceHandle p_hInstance,
+	Handle p_parentparentWindow,
+	const std::string& p_name)
+ : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_LIST_BOX_DIALOG), p_name),
    m_selectedItemIndex(-1)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&ListBoxDialog::onOkClick, this));

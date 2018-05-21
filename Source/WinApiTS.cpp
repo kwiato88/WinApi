@@ -57,7 +57,7 @@ void listDialog()
 {
 	out.testStarted("WinApi::ListBoxDialog");
 
-	WinApi::ListBoxDialog dlg(hModule, WinApi::Handle(0));
+	WinApi::ListBoxDialog dlg(hModule, WinApi::Handle(0), "select item from list");
 	dlg.setItems({ "string 1", "string 2", "string3" });
 	auto returnCode = dlg.show();
 	auto selected = dlg.getSelectedItemIndex();
@@ -71,7 +71,7 @@ void gridDialog()
 {
 	out.testStarted("WinApi::GridDialog");
 
-	WinApi::GridDialog dlg(hModule, WinApi::Handle(0));
+	WinApi::GridDialog dlg(hModule, WinApi::Handle(0), "select row");
 	dlg.setTitles({ "col 1", "col2" });
 	dlg.setContent({ {"cel 11", "cell 22"}, {"cell21", "cell22"} });
 	auto returnCode = dlg.show();
@@ -121,7 +121,7 @@ void selectDirPathDailog()
 {
 	out.testStarted("WinApi::SelectDirPathDialog");
 
-	WinApi::SelectDirPathDialog dlg(WinApi::Handle(0), "comment", "D:\\");
+	WinApi::SelectDirPathDialog dlg(WinApi::Handle(0), "select folder", "D:\\");
 	auto code = dlg.show();
 	auto selected = dlg.getSelectedPath();
 
@@ -135,7 +135,7 @@ void selectFilePathDailog()
 {
 	out.testStarted("WinApi::SelectFilePathDialog");
 
-	WinApi::SelectFilePathDialog dlg(WinApi::Handle(0), "comment", "D:\\");
+	WinApi::SelectFilePathDialog dlg(WinApi::Handle(0), "select file", "D:\\");
 	auto code = dlg.show();
 	auto selected = dlg.getSelectedPath();
 

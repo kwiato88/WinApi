@@ -11,8 +11,8 @@ Handle Dialog::getFocus()
 	return Handle(GetFocus());
 }
 
-Dialog::Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId)
-    : m_hInstance(p_hInstance), m_parent(p_parent), m_self(0), m_resourceId(p_resourceId)
+Dialog::Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId, const std::string& p_title)
+    : m_hInstance(p_hInstance), m_parent(p_parent), m_self(0), m_resourceId(p_resourceId), m_defaultTitle(p_title)
 {
 }
 
@@ -25,6 +25,8 @@ BOOL CALLBACK Dialog::DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lPara
         {
             l_dlg = reinterpret_cast<Dialog*>(lParam);
             l_dlg->m_self = hwnd;
+			if (!l_dlg->m_defaultTitle.empty())
+				l_dlg->setTitle(l_dlg->m_defaultTitle);
             l_dlg->onInit();
             SetWindowLongPtr(hwnd,GWLP_USERDATA,lParam);
         }
