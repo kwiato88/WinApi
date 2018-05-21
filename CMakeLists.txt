@@ -9,6 +9,7 @@ add_library(
     STATIC
     Source/Dialog.cpp
     Source/DialogMsgMatchers.cpp
+    Source/MessageDialog.cpp
     Source/ListBoxDialog.cpp
     Source/GridDialog.cpp
     Source/TreeDialog.cpp

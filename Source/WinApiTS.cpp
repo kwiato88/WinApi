@@ -1,3 +1,4 @@
+//This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <Windows.h>
 #include <iostream>
 
@@ -176,6 +177,35 @@ void selectFilePathsDailog()
 	out.testFinished();
 }
 
+void messageDialog()
+{
+	out.testStarted("WinApi::MessageDialog");
+
+	out.print("message with warn, retry and cancel");
+	WinApi::MessageDialog message{ WinApi::Handle() };
+	message.withTitle("title");
+	message.withContent("something nice");
+	message.with(WinApi::MessageDialog::Icon::Warn);
+	message.with(WinApi::MessageDialog::Buttons::RetryCancel);
+	auto code = message.show();
+	out.print("return code: ", WinApi::toStr(code));
+
+	out.print("message with default params");
+	WinApi::MessageDialog message2{ WinApi::Handle() };
+	code = message2.show();
+	out.print("return code: ", WinApi::toStr(code));
+
+	out.print("message with ok");
+	WinApi::MessageDialog message3{ WinApi::Handle() };
+	message3.withTitle("title");
+	message3.withContent("something nice");
+	message3.with(WinApi::MessageDialog::Buttons::Ok);
+	code = message3.show();
+	out.print("return code: ", WinApi::toStr(code));
+
+	out.testFinished();
+}
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main()
 {
@@ -190,6 +220,7 @@ int main()
 		selectFilePathDailog();
 		selectDirPathsDailog();
 		selectFilePathsDailog();
+		messageDialog();
 	}
 	catch (std::exception& e)
 	{
