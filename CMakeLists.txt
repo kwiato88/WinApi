@@ -26,6 +26,7 @@ add_library(
     Source/WinApiDirPathGetter.cpp
     Source/WinApiFilePathGetter.cpp
     Source/WinApiLastErrorException.cpp
+    Source/Clipboard.cpp
 )
 
 target_include_directories(

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "CommonDialogs.hpp"
+#include "Clipboard.hpp"
 
 class Printer
 {
@@ -206,12 +207,33 @@ void messageDialog()
 	out.testFinished();
 }
 
+void copyToClipboard()
+{
+	out.testStarted("copy to clipboard");
+
+	WinApi::Clipboard::set(WinApi::Clipboard::String("Test haha!"));
+
+	out.testFinished();
+}
+
+void copyFromClipboard()
+{
+	out.testStarted("copy from clipboard");
+
+	std::string txt = WinApi::Clipboard::getText();
+	
+	out.print("text from clipboard: ", txt);
+	out.testFinished();
+}
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main()
 {
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
+		copyFromClipboard();
+		copyToClipboard();
 		listDialog();
 		gridDialog();
 		queryDialog();
