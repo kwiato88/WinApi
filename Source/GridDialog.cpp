@@ -8,13 +8,23 @@
 #include "GridDialogDef.h"
 #include "DialogMsgMatchers.hpp"
 #include "ContextMenu.hpp"
-#include "MessageDialog.hpp"
-
-#include <iostream>
+#include "Clipboard.hpp"
 
 namespace WinApi
 {
-
+namespace
+{
+std::string rowToStr(const std::vector<std::string>& p_row)
+{
+	std::string out;
+	if (!p_row.empty())
+		out += p_row.front();
+	for (std::size_t i = 1; i < p_row.size(); ++i)
+		(out += '\t') += p_row[i];
+	out += '\n';
+	return out;
+}
+}
 GridDialog::GridDialog(
 	InstanceHandle p_hInstance,
 	Handle p_parentparentWindow,
@@ -39,23 +49,23 @@ void GridDialog::onInit()
 void GridDialog::showContextMenu(int p_xPos, int p_yPos)
 {
 	ContextMenu menu(m_self);
-	menu.add(ContextMenu::Item{ "test fun 1" , std::bind(&GridDialog::test1, this)});
-	menu.addSeparator();
-	menu.add(ContextMenu::Item{ "test fun 2" , std::bind(&GridDialog::test2, this) });
+	menu.add(ContextMenu::Item{ "Copy table" , std::bind(&GridDialog::copyAll, this) });
+	menu.add(ContextMenu::Item{ "Copy selected row" , std::bind(&GridDialog::copySelected, this) });
 	menu.show(p_xPos, p_yPos);
 }
 
-void GridDialog::test1()
+void GridDialog::copyAll()
 {
-	MessageDialog dlg(m_self);
-	dlg.withTitle("test1");
-	dlg.show();
+	std::string toCopy;
+	for (const auto row : m_gridRows)
+		toCopy += rowToStr(row);
+	Clipboard::set(Clipboard::String(toCopy));
 }
-void GridDialog::test2()
+void GridDialog::copySelected()
 {
-	MessageDialog dlg(m_self);
-	dlg.withTitle("test2");
-	dlg.show();
+	auto selected = m_gridControl.getSelectedRowIndex();
+	if (selected != -1)
+		Clipboard::set(Clipboard::String(rowToStr(m_gridRows[selected])));
 }
 
 void GridDialog::onOkClick()

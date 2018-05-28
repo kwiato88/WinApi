@@ -28,8 +28,8 @@ private:
     void onOkClick();
     void onCancleClick();
     void onGridDoubleClick();
-	void test1();
-	void test2();
+	void copyAll();
+	void copySelected();
 
 	Control::RcFileGrid m_gridControl;
 
