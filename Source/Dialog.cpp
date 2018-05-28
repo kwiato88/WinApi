@@ -1,5 +1,6 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <boost/lexical_cast.hpp>
+#include <windowsx.h>
 #include "Dialog.hpp"
 #include "WinApiLastErrorException.hpp"
 
@@ -43,8 +44,13 @@ BOOL Dialog::handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam)
 {
     if(p_msgCode == WM_COMMAND)
         return dispatchCommandMsg(p_wParam);
-    else if(p_msgCode == WM_NOTIFY)
+    if(p_msgCode == WM_NOTIFY)
         return dispatchNotifyMsg(p_lParam);
+	if (p_msgCode == WM_CONTEXTMENU)
+	{
+		showContextMenu(adjustPosX(GET_X_LPARAM(p_lParam)), adjustPosY(GET_Y_LPARAM(p_lParam)));
+		return TRUE;
+	}
     return FALSE;
 }
 
@@ -59,6 +65,26 @@ BOOL Dialog::dispatchCommandMsg(WPARAM p_wParam)
         }
     }
     return FALSE;
+}
+
+int Dialog::adjustPosX(int p_x)
+{
+	if (p_x != -1)
+		return p_x;
+	RECT rec;
+	if (GetWindowRect(m_self, &rec) == 0)
+		return 0;
+	return rec.left;
+}
+
+int Dialog::adjustPosY(int p_y)
+{
+	if (p_y != -1)
+		return p_y;
+	RECT rec;
+	if (GetWindowRect(m_self, &rec) == 0)
+		return 0;
+	return rec.top;
 }
 
 void Dialog::registerHandler(CommandMsgMatcher p_matcher, MsgHandler p_handler)
@@ -119,6 +145,10 @@ void Dialog::setTitle(const std::string& p_title)
 Handle Dialog::getItem(ResourceId p_itemId)
 {
     return Handle(GetDlgItem(m_self, p_itemId));
+}
+
+void Dialog::showContextMenu(int, int)
+{
 }
 
 } // namespace WinApi

@@ -232,10 +232,14 @@ int main()
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
+		/*
 		copyFromClipboard();
 		copyToClipboard();
+		*/
 		listDialog();
+		
 		gridDialog();
+		/*
 		queryDialog();
 		treeDialog();
 		selectDirPathDailog();
@@ -243,6 +247,7 @@ int main()
 		selectDirPathsDailog();
 		selectFilePathsDailog();
 		messageDialog();
+		*/
 	}
 	catch (std::exception& e)
 	{

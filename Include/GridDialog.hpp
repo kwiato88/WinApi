@@ -23,10 +23,13 @@ public:
 
 private:
     void onInit();
+	void showContextMenu(int p_xPos, int p_yPos);
 
     void onOkClick();
     void onCancleClick();
     void onGridDoubleClick();
+	void test1();
+	void test2();
 
 	Control::RcFileGrid m_gridControl;
 

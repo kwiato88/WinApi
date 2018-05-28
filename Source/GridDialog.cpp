@@ -7,6 +7,8 @@
 #include "GridDialog.hpp"
 #include "GridDialogDef.h"
 #include "DialogMsgMatchers.hpp"
+#include "ContextMenu.hpp"
+#include "MessageDialog.hpp"
 
 #include <iostream>
 
@@ -32,6 +34,28 @@ void GridDialog::onInit()
     m_gridControl.addColumns(m_gridLabels);
     m_gridControl.addRows(m_gridRows);
     m_gridControl.setFocus();
+}
+
+void GridDialog::showContextMenu(int p_xPos, int p_yPos)
+{
+	ContextMenu menu(m_self);
+	menu.add(ContextMenu::Item{ "test fun 1" , std::bind(&GridDialog::test1, this)});
+	menu.addSeparator();
+	menu.add(ContextMenu::Item{ "test fun 2" , std::bind(&GridDialog::test2, this) });
+	menu.show(p_xPos, p_yPos);
+}
+
+void GridDialog::test1()
+{
+	MessageDialog dlg(m_self);
+	dlg.withTitle("test1");
+	dlg.show();
+}
+void GridDialog::test2()
+{
+	MessageDialog dlg(m_self);
+	dlg.withTitle("test2");
+	dlg.show();
 }
 
 void GridDialog::onOkClick()

@@ -50,7 +50,10 @@ private:
     BOOL handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam);
     BOOL dispatchCommandMsg(WPARAM p_wParam);
     BOOL dispatchNotifyMsg(LPARAM p_lParam);
+	int adjustPosX(int p_x);
+	int adjustPosY(int p_y);
     virtual void onInit() = 0;
+	virtual void showContextMenu(int p_xPos, int p_yPos);
 
 	std::string m_defaultTitle;
 	const ResourceId m_resourceId;

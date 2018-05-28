@@ -48,22 +48,17 @@ void ContextMenu::addSeparator()
 
 void ContextMenu::show(int p_x, int p_y)
 {
-	//TODO: handle x, y == -1, -1
 	SetForegroundWindow(parent);
-	POINT pos;
-	pos.x = p_x;
-	pos.y = p_y;
-	ClientToScreen(parent, &pos);
 	unsigned int selected = TrackPopupMenu(
 		self,
-		TPM_RIGHTALIGN | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_RETURNCMD,
-		pos.x,
-		pos.y,
+		TPM_NONOTIFY | TPM_RETURNCMD,
+		p_x,
+		p_y,
 		0,
 		parent,
 		nullptr);
 	if (selected == 0)
-		throw LastErrorException("Failed to display context menu");
+		return;
 	if (items.find(selected) == items.end())
 		throw std::runtime_error("Context menu item idx out of range"); //TODO: replace with dediacted error, introduce WinApi::Error ???
 	items[selected].handler();
