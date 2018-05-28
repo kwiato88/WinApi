@@ -29,25 +29,12 @@ struct SelectorTypeTraits<SelectorType::File>
 	static std::string itemName() { return "file"; }
 };
 
-namespace
-{
-std::string rowToStr(const std::vector<std::string>& p_row)
-{
-	std::string out;
-	if (!p_row.empty())
-		out += p_row.front();
-	for (std::size_t i = 1; i < p_row.size(); ++i)
-		(out += '\t') += p_row[i];
-	out += '\n';
-	return out;
-}
-}
-
 template <SelectorType selector>
 SelectPathsDialog<selector>::SelectPathsDialog(
         InstanceHandle p_hInstance,
-        Handle p_parentWindow)
-    : Dialog(p_hInstance, p_parentWindow, ResourceId(ID_SELECT_PATHS_DIALOG))
+        Handle p_parentWindow,
+		const std::string& p_pathsCopySeparator)
+    : Dialog(p_hInstance, p_parentWindow, ResourceId(ID_SELECT_PATHS_DIALOG)), itemsSeparator(p_pathsCopySeparator)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),      std::bind(&SelectPathsDialog::onOkClick, this));
     registerHandler(MsgMatchers::ButtonClick(IDCANCEL),  std::bind(&SelectPathsDialog::onCancleClick, this));
@@ -154,7 +141,7 @@ void SelectPathsDialog<selector>::copyAll()
 {
 	std::string toCopy;
 	for (const auto row : m_paths)
-		toCopy += rowToStr(row);
+		toCopy += row.at(0) + itemsSeparator;
 	Clipboard::set(Clipboard::String(toCopy));
 }
 template <SelectorType selector>
@@ -162,7 +149,7 @@ void SelectPathsDialog<selector>::copySelected()
 {
 	auto selected = m_itemsControl.getSelectedRowIndex();
 	if (selected != -1)
-		Clipboard::set(Clipboard::String(rowToStr(m_paths[selected])));
+		Clipboard::set(Clipboard::String(m_paths[selected].at(0)));
 }
 
 template class SelectPathsDialog<SelectorType::Directory>;

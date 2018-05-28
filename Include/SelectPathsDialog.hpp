@@ -23,7 +23,8 @@ class SelectPathsDialog : public Dialog
 public:
     SelectPathsDialog(
         InstanceHandle p_hInstance,
-        Handle p_parentWindow);
+        Handle p_parentWindow,
+		const std::string& p_pathsCopySeparator = "\n");
 
     void setInitalPath(const std::string& p_path);
     void setPaths(const std::vector<std::string>& p_paths);
@@ -46,6 +47,7 @@ private:
 	Control::Edit m_item;
     std::vector<std::vector<std::string>> m_paths;
     std::string m_initialPath;
+	std::string itemsSeparator;
 };
 
 } // namespace WinApi
