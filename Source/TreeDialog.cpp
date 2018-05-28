@@ -17,15 +17,15 @@ namespace
 class TreeExport
 {
 public:
-	TreeExport(const std::string& p_indnetStr)
-		: indentLvl(0), indentStr(p_indnetStr)
+	TreeExport(const TreeDialog::Copy& p_data)
+		: indentLvl(0), data(p_data)
 	{}
 
 	void append(const Node& p_node)
 	{
 		appendIndent();
 		out += p_node.m_value;
-		out += '\n';
+		out += data.itemSepartor;
 		++indentLvl;
 		for (const auto& node : p_node.m_children)
 			append(node);
@@ -40,11 +40,11 @@ private:
 	void appendIndent()
 	{
 		for (int i = 0; i < indentLvl; ++i)
-			out += indentStr;
+			out += data.indent;
 	}
 
 	int indentLvl;
-	std::string indentStr;
+	TreeDialog::Copy data;
 	std::string out;
 };
 }
@@ -53,9 +53,9 @@ TreeDialog::TreeDialog(
         InstanceHandle p_hInstance,
         Handle p_parentWindow,
 		const std::string& p_title,
-		const std::string& p_exportIndentStr)
+		const Copy& p_exportData)
  : Dialog(p_hInstance, p_parentWindow, ResourceId(ID_TREE_DIALOG), p_title),
-	m_selectedItemUserContext(nullptr), indent(p_exportIndentStr)
+	m_selectedItemUserContext(nullptr), exportData(p_exportData)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&TreeDialog::onOkClick, this));
     registerHandler(MsgMatchers::ButtonClick(IDCANCEL), std::bind(&TreeDialog::onCancleClick, this));
@@ -95,7 +95,7 @@ void TreeDialog::showContextMenu(int p_xPos, int p_yPos)
 }
 void TreeDialog::copyAll()
 {
-	TreeExport toCopy(indent);
+	TreeExport toCopy(exportData);
 	for(const auto& node : m_treeNodes)
 		toCopy.append(node);
 	Clipboard::set(Clipboard::String(toCopy.result()));
@@ -105,7 +105,7 @@ void TreeDialog::copySelectedSubTree()
 	const Node* subTree = m_tree.getSelectedNode();
 	if (subTree != nullptr)
 	{
-		TreeExport toCopy(indent);
+		TreeExport toCopy(exportData);
 		toCopy.append(*subTree);
 		Clipboard::set(Clipboard::String(toCopy.result()));
 	}
