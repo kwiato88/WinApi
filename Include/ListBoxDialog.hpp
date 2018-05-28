@@ -14,7 +14,8 @@ namespace WinApi
 class ListBoxDialog : public Dialog
 {// TODO: refactor to use edit control
 public:
-    ListBoxDialog(InstanceHandle p_hInstance, Handle p_parentWindow, const std::string& p_name = "");
+    ListBoxDialog(InstanceHandle p_hInstance, Handle p_parentWindow,
+		const std::string& p_name = "", const std::string& p_itemCopySeparator = "\n");
 
     int getSelectedItemIndex() const;
     void setItems(const std::vector<std::string>& p_items);
@@ -35,6 +36,7 @@ private:
 
     int m_selectedItemIndex;
     std::vector<std::string> m_items;
+	std::string itemsSeparator;
 };
 
 } // namespace WinApi

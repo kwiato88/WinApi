@@ -55,9 +55,10 @@ struct StringLengthComparator
 ListBoxDialog::ListBoxDialog(
 	InstanceHandle p_hInstance,
 	Handle p_parentparentWindow,
-	const std::string& p_name)
+	const std::string& p_name,
+	const std::string& p_itemCopySeparator)
  : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_LIST_BOX_DIALOG), p_name),
-   m_selectedItemIndex(-1)
+   m_selectedItemIndex(-1), itemsSeparator(p_itemCopySeparator)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&ListBoxDialog::onOkClick, this));
     registerHandler(MsgMatchers::ButtonClick(IDCANCEL), std::bind(&ListBoxDialog::onCancleClick, this));
@@ -138,7 +139,7 @@ void ListBoxDialog::copyAll()
 {
 	std::string out;
 	for (const auto& row : m_items)
-		out += row + '\n';
+		out += row + itemsSeparator;
 	Clipboard::set(Clipboard::String(out));
 }
 
@@ -146,7 +147,7 @@ void ListBoxDialog::copySelected()
 {
 	auto selected = (int)SendMessage(getListBoxHandle(), LB_GETCURSEL, 0, 0);
 	if (selected < m_items.size())
-		Clipboard::set(Clipboard::String(m_items[selected] + '\n'));
+		Clipboard::set(Clipboard::String(m_items[selected] + itemsSeparator));
 }
 
 } // namespace WinApi

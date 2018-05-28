@@ -59,7 +59,7 @@ void listDialog()
 {
 	out.testStarted("WinApi::ListBoxDialog");
 
-	WinApi::ListBoxDialog dlg(hModule, WinApi::Handle(0), "select item from list");
+	WinApi::ListBoxDialog dlg(hModule, WinApi::Handle(0), "select item from list", "|");
 	dlg.setItems({ "string 1", "string 2", "string3" });
 	auto returnCode = dlg.show();
 	auto selected = dlg.getSelectedItemIndex();
@@ -235,10 +235,10 @@ int main()
 		/*
 		copyFromClipboard();
 		copyToClipboard();
-		listDialog();
 		*/
-		gridDialog();
+		listDialog();
 		/*
+		gridDialog();
 		queryDialog();
 		treeDialog();
 		selectDirPathDailog();
