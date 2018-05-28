@@ -7,6 +7,8 @@
 #include "ListBoxDialog.hpp"
 #include "ListBoxDialogDef.h"
 #include "DialogMsgMatchers.hpp"
+#include "ContextMenu.hpp"
+#include "Clipboard.hpp"
 
 namespace WinApi
 {
@@ -122,6 +124,29 @@ int ListBoxDialog::getSelectedItemIndex() const
 void ListBoxDialog::setItems(const std::vector<std::string>& p_items)
 {
     m_items = p_items;
+}
+
+void ListBoxDialog::showContextMenu(int p_xPos, int p_yPos)
+{
+	ContextMenu menu(m_self);
+	menu.add(ContextMenu::Item{ "Copy table", std::bind(&ListBoxDialog::copyAll, this) });
+	menu.add(ContextMenu::Item{ "Copy selected row", std::bind(&ListBoxDialog::copySelected, this) });
+	menu.show(p_xPos, p_yPos);
+}
+
+void ListBoxDialog::copyAll()
+{
+	std::string out;
+	for (const auto& row : m_items)
+		out += row + '\n';
+	Clipboard::set(Clipboard::String(out));
+}
+
+void ListBoxDialog::copySelected()
+{
+	auto selected = (int)SendMessage(getListBoxHandle(), LB_GETCURSEL, 0, 0);
+	if (selected < m_items.size())
+		Clipboard::set(Clipboard::String(m_items[selected] + '\n'));
 }
 
 } // namespace WinApi

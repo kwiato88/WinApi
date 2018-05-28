@@ -20,7 +20,8 @@ public:
     void setItems(const std::vector<std::string>& p_items);
 
 private:
-    void onInit();
+    void onInit() override;
+	void showContextMenu(int p_xPos, int p_yPos) override;
     void onOkClick();
     void onCancleClick();
     void onListUpdate();
@@ -29,6 +30,8 @@ private:
     void setListBoxHorizontalScroll();
     void setFocusOnListBox();
     Handle getListBoxHandle();
+	void copyAll();
+	void copySelected();
 
     int m_selectedItemIndex;
     std::vector<std::string> m_items;

@@ -22,8 +22,8 @@ public:
     int getSelectedItemIndex() const;
 
 private:
-    void onInit();
-	void showContextMenu(int p_xPos, int p_yPos);
+    void onInit() override;
+	void showContextMenu(int p_xPos, int p_yPos) override;
 
     void onOkClick();
     void onCancleClick();
