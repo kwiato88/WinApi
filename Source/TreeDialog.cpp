@@ -14,19 +14,33 @@ namespace WinApi
 {
 namespace
 {
-std::string indentToStr(int p_lvl)
+class TreeExport
 {
-	return std::string(p_lvl, '\t');
-}
-void appendNode(std::string& p_out, int p_lvl, const Node& p_node)
-{
-	p_out += indentToStr(p_lvl);
-	p_out += p_node.m_value;
-	p_out += '\n';
-	++p_lvl;
-	for (const auto& node : p_node.m_children)
-		appendNode(p_out, p_lvl, node);
-}
+public:
+	TreeExport(char p_indnetChar)
+		: indentLvl(0), indentChar(p_indnetChar)
+	{}
+
+	void append(const Node& p_node)
+	{
+		out += std::string(indentLvl, indentChar);
+		out += p_node.m_value;
+		out += '\n';
+		++indentLvl;
+		for (const auto& node : p_node.m_children)
+			append(node);
+		--indentLvl;
+	}
+	std::string result()
+	{
+		return out;
+	}
+
+private:
+	int indentLvl;
+	char indentChar;
+	std::string out;
+};
 }
 
 TreeDialog::TreeDialog(
@@ -74,19 +88,19 @@ void TreeDialog::showContextMenu(int p_xPos, int p_yPos)
 }
 void TreeDialog::copyAll()
 {
-	std::string toCopy;
+	TreeExport toCopy('\t');
 	for(const auto& node : m_treeNodes)
-		appendNode(toCopy, 0, node);
-	Clipboard::set(Clipboard::String(toCopy));
+		toCopy.append(node);
+	Clipboard::set(Clipboard::String(toCopy.result()));
 }
 void TreeDialog::copySelectedSubTree()
 {
 	const Node* subTree = m_tree.getSelectedNode();
 	if (subTree != nullptr)
 	{
-		std::string toCopy;
-		appendNode(toCopy, 0, *subTree);
-		Clipboard::set(Clipboard::String(toCopy));
+		TreeExport toCopy('\t');
+		toCopy.append(*subTree);
+		Clipboard::set(Clipboard::String(toCopy.result()));
 	}
 }
 void TreeDialog::copySelected()
