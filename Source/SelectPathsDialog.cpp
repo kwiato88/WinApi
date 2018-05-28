@@ -6,6 +6,8 @@
 #include "WinApiDirPathGetter.hpp"
 #include "WinApiFilePathGetter.hpp"
 #include "DialogMsgMatchers.hpp"
+#include "ContextMenu.hpp"
+#include "Clipboard.hpp"
 
 namespace WinApi
 {
@@ -30,6 +32,20 @@ struct SelectorTypeTraits<SelectorType::File>
 };
 
 using boost::assign::list_of;
+
+namespace
+{
+std::string rowToStr(const std::vector<std::string>& p_row)
+{
+	std::string out;
+	if (!p_row.empty())
+		out += p_row.front();
+	for (std::size_t i = 1; i < p_row.size(); ++i)
+		(out += '\t') += p_row[i];
+	out += '\n';
+	return out;
+}
+}
 
 template <SelectorType selector>
 SelectPathsDialog<selector>::SelectPathsDialog(
@@ -127,6 +143,30 @@ template <SelectorType selector>
 void SelectPathsDialog<selector>::setInitalPath(const std::string& p_path)
 {
     m_initialPath = p_path;
+}
+
+template <SelectorType selector>
+void SelectPathsDialog<selector>::showContextMenu(int p_xPos, int p_yPos)
+{
+	ContextMenu menu(m_self);
+	menu.add(ContextMenu::Item{ "Copy paths", std::bind(&SelectPathsDialog::copyAll, this) });
+	menu.add(ContextMenu::Item{ "Copy selected path", std::bind(&SelectPathsDialog::copySelected, this) });
+	menu.show(p_xPos, p_yPos);
+}
+template <SelectorType selector>
+void SelectPathsDialog<selector>::copyAll()
+{
+	std::string toCopy;
+	for (const auto row : m_paths)
+		toCopy += rowToStr(row);
+	Clipboard::set(Clipboard::String(toCopy));
+}
+template <SelectorType selector>
+void SelectPathsDialog<selector>::copySelected()
+{
+	auto selected = m_itemsControl.getSelectedRowIndex();
+	if (selected != -1)
+		Clipboard::set(Clipboard::String(rowToStr(m_paths[selected])));
 }
 
 template class SelectPathsDialog<SelectorType::Directory>;

@@ -235,17 +235,16 @@ int main()
 		/*
 		copyFromClipboard();
 		copyToClipboard();
-		*/
 		listDialog();
-		
 		gridDialog();
-		/*
 		queryDialog();
 		treeDialog();
 		selectDirPathDailog();
 		selectFilePathDailog();
+		*/
 		selectDirPathsDailog();
 		selectFilePathsDailog();
+		/*
 		messageDialog();
 		*/
 	}

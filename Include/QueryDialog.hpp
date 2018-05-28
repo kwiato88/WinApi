@@ -17,7 +17,7 @@ public:
 	std::string getResponse();
 
 private:
-	void onInit();
+	void onInit() override;
 	void onOkClick();
 	void onCancelClick();
 

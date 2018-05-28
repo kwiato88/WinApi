@@ -30,13 +30,15 @@ public:
     std::vector<std::string> getPaths();
 
 private:
-
-    void onInit();
+    void onInit() override;
+	void showContextMenu(int p_xPos, int p_yPos) override;
     void onOkClick();
     void onCancleClick();
     void onAddClick();
     void onSelectClick();
     void onDeleteClick();
+	void copyAll();
+	void copySelected();
 
     void addItemToControl(const std::string& p_newItem);
 
