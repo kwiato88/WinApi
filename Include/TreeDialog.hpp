@@ -14,7 +14,8 @@ namespace WinApi
 class TreeDialog : public Dialog
 {
 public:
-    TreeDialog(InstanceHandle p_hInstance, Handle p_parentWindow, const std::string& p_title = "Select tree item");
+    TreeDialog(InstanceHandle p_hInstance, Handle p_parentWindow,
+		const std::string& p_title = "Select tree item", const std::string& p_exportIndentStr = "\t");
 
 	void setTreeNodes(const std::vector<Node>& p_tree);
 
@@ -44,6 +45,7 @@ private:
 	Control::Tree m_tree;
 	const void* m_selectedItemUserContext;
 	std::vector<Node> m_treeNodes;
+	std::string indent;
 };
 
 } // namespace WinApi
