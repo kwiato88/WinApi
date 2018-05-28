@@ -1,6 +1,4 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
-#include <boost/assign/list_of.hpp>
-
 #include "SelectPathsDialog.hpp"
 #include "SelectPathsDialogDef.h"
 #include "WinApiDirPathGetter.hpp"
@@ -30,8 +28,6 @@ struct SelectorTypeTraits<SelectorType::File>
 	static std::string dialogTitle() { return "Select files"; }
 	static std::string itemName() { return "file"; }
 };
-
-using boost::assign::list_of;
 
 namespace
 {
@@ -67,7 +63,7 @@ void SelectPathsDialog<selector>::onInit()
 	setTitle(SelectorTypeTraits<selector>::dialogTitle());
     //m_itemsControl.init(m_self, m_hInstance, 12, 74, 362, 200);
     m_itemsControl.init(getItem(ResourceId(ID_SELECT_PATHS_DIALOG_GRID)));
-    m_itemsControl.addColumns(list_of("Path"));
+	m_itemsControl.addColumns({ "Path" });
     m_itemsControl.addRows(m_paths);
 	m_item.init(getItem(ResourceId(ID_ITEM)));
 	m_item.setContent(m_initialPath);
@@ -90,7 +86,7 @@ void SelectPathsDialog<selector>::addItemToControl(const std::string& p_newItem)
 {
     if(!p_newItem.empty())
     {
-        m_paths.push_back(list_of(p_newItem));
+		m_paths.push_back({ p_newItem });
         m_itemsControl.addRows(m_paths);
     }
 }
@@ -136,7 +132,7 @@ void SelectPathsDialog<selector>::setPaths(const std::vector<std::string>& p_pat
 {
     m_paths.clear();
     for(const auto& path : p_paths)
-        m_paths.push_back(list_of(path));
+		m_paths.push_back({ path });
 }
 
 template <SelectorType selector>
