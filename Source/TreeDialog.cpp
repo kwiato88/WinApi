@@ -6,11 +6,28 @@
 #include "DialogMsgMatchers.hpp"
 #include "ContextMenu.hpp"
 #include "Clipboard.hpp"
+#include "MessageDialog.hpp"
 
 #include <iostream>
 
 namespace WinApi
 {
+namespace
+{
+std::string indentToStr(int p_lvl)
+{
+	return std::string(p_lvl, '\t');
+}
+void appendNode(std::string& p_out, int p_lvl, const Node& p_node)
+{
+	p_out += indentToStr(p_lvl);
+	p_out += p_node.m_value;
+	p_out += '\n';
+	++p_lvl;
+	for (const auto& node : p_node.m_children)
+		appendNode(p_out, p_lvl, node);
+}
+}
 
 TreeDialog::TreeDialog(
         InstanceHandle p_hInstance,
@@ -56,10 +73,27 @@ void TreeDialog::showContextMenu(int p_xPos, int p_yPos)
 	menu.show(p_xPos, p_yPos);
 }
 void TreeDialog::copyAll()
-{}
+{
+	std::string toCopy;
+	for(const auto& node : m_treeNodes)
+		appendNode(toCopy, 0, node);
+	Clipboard::set(Clipboard::String(toCopy));
+}
 void TreeDialog::copySelectedSubTree()
-{}
+{
+	const Node* subTree = m_tree.getSelectedNode();
+	if (subTree != nullptr)
+	{
+		std::string toCopy;
+		appendNode(toCopy, 0, *subTree);
+		Clipboard::set(Clipboard::String(toCopy));
+	}
+}
 void TreeDialog::copySelected()
-{}
+{
+	const Node* subTree = m_tree.getSelectedNode();
+	if (subTree != nullptr)
+		Clipboard::set(Clipboard::String(subTree->m_value));
+}
 
 } // namespace WinApi

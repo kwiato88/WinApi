@@ -24,6 +24,7 @@ class Tree : public Control
 
 		Item addChild(const Node& p_node);
 		const void* getUserContext();
+		const Node* getNode();
 
 	private:
 		Item(const Node& p_node, const Item& p_parrent);
@@ -44,6 +45,7 @@ class Tree : public Control
 public:
 	void addRoot(const Node& p_root);
 	const void* getSelectedItemContext();
+	const Node* getSelectedNode();
 
 private:
 	void addItem(const Node& p_node, Item& p_parrent);

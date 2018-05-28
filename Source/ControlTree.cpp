@@ -22,7 +22,7 @@ Tree::Item Tree::Item::addChild(const Node& p_node)
 	return Item(p_node, *this);
 }
 
-const void* Tree::Item::getUserContext()
+const Node* Tree::Item::getNode()
 {
 	if (nativeItem != 0)
 	{
@@ -30,8 +30,16 @@ const void* Tree::Item::getUserContext()
 		item.mask = TVIF_PARAM | TVIF_HANDLE;
 		item.hItem = nativeItem;
 		if (TreeView_GetItem(tree, &item))
-			return (const void*)(item.lParam);
+			return (const Node*)(item.lParam);
 	}
+	return nullptr;
+}
+
+const void* Tree::Item::getUserContext()
+{
+	const Node* node = getNode();
+	if (node != nullptr)
+		return node->m_userContext;
 	return nullptr;
 }
 
@@ -41,7 +49,7 @@ TVINSERTSTRUCT Tree::Item::buildInsertStruct(const Node& p_node, HTREEITEM p_par
 	item.mask = TVIF_TEXT | TVIF_PARAM;
 	item.cchTextMax = mbstowcs(nativeText, p_node.m_value.c_str(), _MAX_PATH - 1);
 	item.pszText = nativeText;
-	item.lParam = (LPARAM)(p_node.m_userContext);
+	item.lParam = (LPARAM)(&p_node);
 
 	TVINSERTSTRUCT insertItem;
 	insertItem.item = item;
@@ -72,6 +80,12 @@ const void* Tree::getSelectedItemContext()
 {
 	Item selectedItem(self, TreeView_GetSelection(self));
 	return selectedItem.getUserContext();
+}
+
+const Node* Tree::getSelectedNode()
+{
+	Item selectedItem(self, TreeView_GetSelection(self));
+	return selectedItem.getNode();
 }
 
 }
