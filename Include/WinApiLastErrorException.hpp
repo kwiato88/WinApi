@@ -19,7 +19,13 @@ private:
 	LPTSTR errorDescription;
 };
 
-class LastErrorException : public std::runtime_error
+class Exception : public std::runtime_error
+{
+public:
+	Exception(const std::string& p_what);
+};
+
+class LastErrorException : public Exception
 {
 public:
 	LastErrorException(const std::string& p_description);

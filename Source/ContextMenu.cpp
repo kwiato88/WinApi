@@ -60,7 +60,7 @@ void ContextMenu::show(int p_x, int p_y)
 	if (selected == 0)
 		return;
 	if (items.find(selected) == items.end())
-		throw std::runtime_error("Context menu item idx out of range"); //TODO: replace with dediacted error, introduce WinApi::Error ???
+		throw Exception("Context menu item idx out of range");
 	items[selected].handler();
 }
 

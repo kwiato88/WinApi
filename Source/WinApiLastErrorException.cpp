@@ -35,8 +35,12 @@ std::string LastError::describe() const
 	return (message + ". Error message: " + descriptionBuffer);
 }
 
+Exception::Exception(const std::string& p_what)
+	: std::runtime_error(p_what)
+{}
+
 LastErrorException::LastErrorException(const std::string& p_description)
-	: std::runtime_error(p_description + ". " + LastError().describe())
+	: Exception(p_description + ". " + LastError().describe())
 {}
 
 }
