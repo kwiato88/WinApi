@@ -33,9 +33,13 @@ public:
 	}
 
 private:
-    void onInit();
+    void onInit() override;
+	void showContextMenu(int p_xPos, int p_yPos) override;
     void onOkClick();
     void onCancleClick();
+	void copyAll();
+	void copySelectedSubTree();
+	void copySelected();
 
 	Control::Tree m_tree;
 	const void* m_selectedItemUserContext;

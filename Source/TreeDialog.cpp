@@ -4,6 +4,8 @@
 #include "TreeDialog.hpp"
 #include "TreeDialogDef.h"
 #include "DialogMsgMatchers.hpp"
+#include "ContextMenu.hpp"
+#include "Clipboard.hpp"
 
 #include <iostream>
 
@@ -44,5 +46,20 @@ void TreeDialog::setTreeNodes(const std::vector<Node>& p_tree)
 {
 	m_treeNodes = p_tree;
 }
+
+void TreeDialog::showContextMenu(int p_xPos, int p_yPos)
+{
+	ContextMenu menu(m_self);
+	menu.add(ContextMenu::Item{ "Copy tree", std::bind(&TreeDialog::copyAll, this) });
+	menu.add(ContextMenu::Item{ "Copy sub-tree", std::bind(&TreeDialog::copySelectedSubTree, this) });
+	menu.add(ContextMenu::Item{ "Copy selected item", std::bind(&TreeDialog::copySelected, this) });
+	menu.show(p_xPos, p_yPos);
+}
+void TreeDialog::copyAll()
+{}
+void TreeDialog::copySelectedSubTree()
+{}
+void TreeDialog::copySelected()
+{}
 
 } // namespace WinApi
