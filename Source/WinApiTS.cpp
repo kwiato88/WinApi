@@ -236,11 +236,11 @@ int main()
 		copyFromClipboard();
 		copyToClipboard();
 		listDialog();
-		gridDialog();
-		queryDialog();
 		*/
-		treeDialog();
+		gridDialog();
 		/*
+		queryDialog();
+		treeDialog();
 		selectDirPathDailog();
 		selectFilePathDailog();
 		selectDirPathsDailog();

@@ -14,23 +14,24 @@ namespace WinApi
 {
 namespace
 {
-std::string rowToStr(const std::vector<std::string>& p_row)
+std::string rowToStr(const std::vector<std::string>& p_row, const GridDialog::Copy& p_data)
 {
 	std::string out;
 	if (!p_row.empty())
 		out += p_row.front();
 	for (std::size_t i = 1; i < p_row.size(); ++i)
-		(out += '\t') += p_row[i];
-	out += '\n';
+		(out += p_data.cellSeparator) += p_row[i];
+	out += p_data.rowSeparator;
 	return out;
 }
 }
 GridDialog::GridDialog(
 	InstanceHandle p_hInstance,
 	Handle p_parentparentWindow,
-	const std::string& p_title)
+	const std::string& p_title,
+	const Copy& p_exportData)
  : Dialog(p_hInstance, p_parentparentWindow, ResourceId(ID_GRID_DIALOG), p_title),
-   m_selectedItemIndex(-1)
+   m_selectedItemIndex(-1), exportData(p_exportData)
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&GridDialog::onOkClick, this));
     registerHandler(MsgMatchers::ButtonClick(IDCANCEL), std::bind(&GridDialog::onCancleClick, this));
@@ -58,14 +59,14 @@ void GridDialog::copyAll()
 {
 	std::string toCopy;
 	for (const auto row : m_gridRows)
-		toCopy += rowToStr(row);
+		toCopy += rowToStr(row, exportData);
 	Clipboard::set(Clipboard::String(toCopy));
 }
 void GridDialog::copySelected()
 {
 	auto selected = m_gridControl.getSelectedRowIndex();
 	if (selected != -1)
-		Clipboard::set(Clipboard::String(rowToStr(m_gridRows[selected])));
+		Clipboard::set(Clipboard::String(rowToStr(m_gridRows[selected], exportData)));
 }
 
 void GridDialog::onOkClick()

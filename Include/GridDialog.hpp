@@ -15,7 +15,14 @@ namespace WinApi
 class GridDialog : public Dialog
 {
 public:
-    GridDialog(InstanceHandle p_hInstance, Handle p_parentWindow, const std::string& p_title = "");
+	struct Copy
+	{
+		std::string cellSeparator;
+		std::string rowSeparator;
+	};
+
+	GridDialog(InstanceHandle p_hInstance, Handle p_parentWindow,
+		const std::string& p_title = "", const Copy& p_exportData = Copy{ "\t", "\n" });
 
     void setTitles(const std::vector<std::string>& p_titles);
     void setContent(const std::vector<std::vector<std::string> >& p_data);
@@ -36,6 +43,7 @@ private:
     std::vector<std::string> m_gridLabels;
     std::vector<std::vector<std::string> > m_gridRows;
     int m_selectedItemIndex;
+	Copy exportData;
 };
 
 } // namespace WinApi
