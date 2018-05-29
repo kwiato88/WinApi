@@ -48,7 +48,7 @@ private:
 		return str;
 	}
 
-	int indent;
+	int indent{0};
 	std::string testName;
 };
 
@@ -107,7 +107,7 @@ void treeDialog()
 	int rootCon = 0;
 	int child1Con = 1, child2Con = 2, child3Con = 3, child21Con = 4;
 	WinApi::Node child21("child 21", &child21Con);
-	WinApi::Node child1("child 1", &child1Con), child2("child 2", {child21}, &child1Con), child3("child 2", &child2Con);
+	WinApi::Node child1("child 1", &child1Con), child2("child 2", {child21}, &child2Con), child3("child 3", &child3Con);
 	WinApi::Node root("root", { child1, child2, child3 }, &rootCon);
 	dlg.setTreeNodes({ root });
 	
