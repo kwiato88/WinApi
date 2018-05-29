@@ -3,6 +3,7 @@
 #include <windowsx.h>
 #include "Dialog.hpp"
 #include "WinApiLastErrorException.hpp"
+#include "MessageDialog.hpp"
 
 namespace WinApi
 {
@@ -47,9 +48,7 @@ BOOL Dialog::handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam)
     if(p_msgCode == WM_NOTIFY)
         return dispatchNotifyMsg(p_lParam);
 	if (p_msgCode == WM_CONTEXTMENU)
-	{
-		return showContextMenu(adjustPosX(GET_X_LPARAM(p_lParam)), adjustPosY(GET_Y_LPARAM(p_lParam))) ? TRUE : FALSE;
-	}
+		return handleContextMenuMsg(p_lParam);
     return FALSE;
 }
 
@@ -84,6 +83,25 @@ int Dialog::adjustPosY(int p_y)
 	if (GetWindowRect(m_self, &rec) == 0)
 		return 0;
 	return rec.top;
+}
+
+BOOL Dialog::handleContextMenuMsg(LPARAM p_lParam)
+{
+	try
+	{
+		bool isHandled = showContextMenu(adjustPosX(GET_X_LPARAM(p_lParam)), adjustPosY(GET_Y_LPARAM(p_lParam)));
+		return isHandled ? TRUE : FALSE;
+	}
+	catch (Exception& e)
+	{
+		MessageDialog dlg(m_self);
+		dlg.withTitle("Error");
+		dlg.withContent(std::string("Filed to execute context menu. ") + e.what());
+		dlg.with(MessageDialog::Icon::Error);
+		dlg.with(MessageDialog::Buttons::Ok);
+		dlg.show();
+		return FALSE;
+	}
 }
 
 void Dialog::registerHandler(CommandMsgMatcher p_matcher, MsgHandler p_handler)
