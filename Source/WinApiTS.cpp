@@ -103,7 +103,7 @@ void treeDialog()
 {
 	out.testStarted("WinApi::TreeDialog");
 
-	WinApi::TreeDialog dlg(hModule, WinApi::Handle(0), "widow title", WinApi::TreeDialog::Copy{ "*", ";" });
+	WinApi::TreeDialog dlg(hModule, WinApi::Handle(0), "widow title", WinApi::NodeExport::Copy{ "*", ";" });
 	int rootCon = 0;
 	int child1Con = 1, child2Con = 2, child3Con = 3, child21Con = 4;
 	WinApi::Node child21("child 21", &child21Con);

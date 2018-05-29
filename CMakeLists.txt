@@ -10,6 +10,7 @@ add_library(
     Source/Dialog.cpp
     Source/DialogMsgMatchers.cpp
     Source/MessageDialog.cpp
+    Source/Node.cpp
     Source/ListBoxDialog.cpp
     Source/GridDialog.cpp
     Source/TreeDialog.cpp

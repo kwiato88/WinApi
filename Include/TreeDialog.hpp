@@ -14,14 +14,8 @@ namespace WinApi
 class TreeDialog : public Dialog
 {
 public:
-	struct Copy
-	{
-		std::string indent;
-		std::string itemSepartor;
-	};
-
     TreeDialog(InstanceHandle p_hInstance, Handle p_parentWindow,
-		const std::string& p_title = "Select tree item", const Copy& p_exportData = Copy{ "\t", "\n" });
+		const std::string& p_title = "Select tree item", const NodeExport::Copy& p_exportData = NodeExport::Copy{ "\t", "\n" });
 
 	void setTreeNodes(const std::vector<Node>& p_tree);
 
@@ -51,7 +45,7 @@ private:
 	Control::Tree m_tree;
 	const void* m_selectedItemUserContext;
 	std::vector<Node> m_treeNodes;
-	Copy exportData;
+	NodeExport::Copy exportData;
 };
 
 } // namespace WinApi
