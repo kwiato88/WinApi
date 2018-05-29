@@ -129,12 +129,17 @@ void SelectPathsDialog<selector>::setInitalPath(const std::string& p_path)
 }
 
 template <SelectorType selector>
-void SelectPathsDialog<selector>::showContextMenu(int p_xPos, int p_yPos)
+bool SelectPathsDialog<selector>::showContextMenu(int p_xPos, int p_yPos)
 {
-	ContextMenu menu(m_self);
-	menu.add(ContextMenu::Item{ "Copy paths", std::bind(&SelectPathsDialog::copyAll, this) });
-	menu.add(ContextMenu::Item{ "Copy selected path", std::bind(&SelectPathsDialog::copySelected, this) });
-	menu.show(p_xPos, p_yPos);
+	if (m_itemsControl.isWithin(p_xPos, p_yPos))
+	{
+		ContextMenu menu(m_self);
+		menu.add(ContextMenu::Item{ "Copy paths", std::bind(&SelectPathsDialog::copyAll, this) });
+		menu.add(ContextMenu::Item{ "Copy selected path", std::bind(&SelectPathsDialog::copySelected, this) });
+		menu.show(p_xPos, p_yPos);
+		return true;
+	}
+	return false;
 }
 template <SelectorType selector>
 void SelectPathsDialog<selector>::copyAll()

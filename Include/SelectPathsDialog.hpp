@@ -32,7 +32,7 @@ public:
 
 private:
     void onInit() override;
-	void showContextMenu(int p_xPos, int p_yPos) override;
+	bool showContextMenu(int p_xPos, int p_yPos) override;
     void onOkClick();
     void onCancleClick();
     void onAddClick();

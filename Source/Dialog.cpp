@@ -48,8 +48,7 @@ BOOL Dialog::handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam)
         return dispatchNotifyMsg(p_lParam);
 	if (p_msgCode == WM_CONTEXTMENU)
 	{
-		showContextMenu(adjustPosX(GET_X_LPARAM(p_lParam)), adjustPosY(GET_Y_LPARAM(p_lParam)));
-		return TRUE;
+		return showContextMenu(adjustPosX(GET_X_LPARAM(p_lParam)), adjustPosY(GET_Y_LPARAM(p_lParam))) ? TRUE : FALSE;
 	}
     return FALSE;
 }
@@ -147,8 +146,9 @@ Handle Dialog::getItem(ResourceId p_itemId)
     return Handle(GetDlgItem(m_self, p_itemId));
 }
 
-void Dialog::showContextMenu(int, int)
+bool Dialog::showContextMenu(int, int)
 {
+	return false;
 }
 
 } // namespace WinApi

@@ -53,7 +53,7 @@ private:
 	int adjustPosX(int p_x);
 	int adjustPosY(int p_y);
     virtual void onInit() = 0;
-	virtual void showContextMenu(int p_xPos, int p_yPos);
+	virtual bool showContextMenu(int p_xPos, int p_yPos);
 
 	std::string m_defaultTitle;
 	const ResourceId m_resourceId;

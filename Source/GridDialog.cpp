@@ -47,12 +47,17 @@ void GridDialog::onInit()
     m_gridControl.setFocus();
 }
 
-void GridDialog::showContextMenu(int p_xPos, int p_yPos)
+bool GridDialog::showContextMenu(int p_xPos, int p_yPos)
 {
-	ContextMenu menu(m_self);
-	menu.add(ContextMenu::Item{ "Copy table" , std::bind(&GridDialog::copyAll, this) });
-	menu.add(ContextMenu::Item{ "Copy selected row" , std::bind(&GridDialog::copySelected, this) });
-	menu.show(p_xPos, p_yPos);
+	if (m_gridControl.isWithin(p_xPos, p_yPos))
+	{
+		ContextMenu menu(m_self);
+		menu.add(ContextMenu::Item{ "Copy table" , std::bind(&GridDialog::copyAll, this) });
+		menu.add(ContextMenu::Item{ "Copy selected row" , std::bind(&GridDialog::copySelected, this) });
+		menu.show(p_xPos, p_yPos);
+		return true;
+	}
+	return false;
 }
 
 void GridDialog::copyAll()

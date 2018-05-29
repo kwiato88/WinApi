@@ -85,13 +85,18 @@ void TreeDialog::setTreeNodes(const std::vector<Node>& p_tree)
 	m_treeNodes = p_tree;
 }
 
-void TreeDialog::showContextMenu(int p_xPos, int p_yPos)
+bool TreeDialog::showContextMenu(int p_xPos, int p_yPos)
 {
-	ContextMenu menu(m_self);
-	menu.add(ContextMenu::Item{ "Copy tree", std::bind(&TreeDialog::copyAll, this) });
-	menu.add(ContextMenu::Item{ "Copy sub-tree", std::bind(&TreeDialog::copySelectedSubTree, this) });
-	menu.add(ContextMenu::Item{ "Copy selected item", std::bind(&TreeDialog::copySelected, this) });
-	menu.show(p_xPos, p_yPos);
+	if (m_tree.isWithin(p_xPos, p_yPos))
+	{
+		ContextMenu menu(m_self);
+		menu.add(ContextMenu::Item{ "Copy tree", std::bind(&TreeDialog::copyAll, this) });
+		menu.add(ContextMenu::Item{ "Copy sub-tree", std::bind(&TreeDialog::copySelectedSubTree, this) });
+		menu.add(ContextMenu::Item{ "Copy selected item", std::bind(&TreeDialog::copySelected, this) });
+		menu.show(p_xPos, p_yPos);
+		return true;
+	}
+	return false;
 }
 void TreeDialog::copyAll()
 {

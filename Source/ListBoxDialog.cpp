@@ -127,12 +127,13 @@ void ListBoxDialog::setItems(const std::vector<std::string>& p_items)
     m_items = p_items;
 }
 
-void ListBoxDialog::showContextMenu(int p_xPos, int p_yPos)
+bool ListBoxDialog::showContextMenu(int p_xPos, int p_yPos)
 {
 	ContextMenu menu(m_self);
 	menu.add(ContextMenu::Item{ "Copy table", std::bind(&ListBoxDialog::copyAll, this) });
 	menu.add(ContextMenu::Item{ "Copy selected row", std::bind(&ListBoxDialog::copySelected, this) });
 	menu.show(p_xPos, p_yPos);
+	return true;
 }
 
 void ListBoxDialog::copyAll()

@@ -14,10 +14,13 @@ public:
 	void init(Handle p_self);
 	void setFocus();
 	bool isOwnHandle(Handle p_handle) const;
+	bool isWithin(int p_xPos, int p_yPos) const;
 
 protected:
 	Control();
 	virtual ~Control() = default;
+
+	RECT getRectangle() const;
 
 	Handle self;
 };
