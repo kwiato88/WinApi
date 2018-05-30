@@ -11,6 +11,8 @@ namespace Control
 class Control
 {
 public:
+	Control(const Control&) = delete;
+	Control& operator=(const Control&) = delete;
 	void init(Handle p_self);
 	void setFocus();
 	bool isOwnHandle(Handle p_handle) const;
