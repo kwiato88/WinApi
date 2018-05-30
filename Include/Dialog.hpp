@@ -23,6 +23,9 @@ public:
 
     Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourceId, const std::string& p_title = "");
     virtual ~Dialog() {}
+	Dialog(const Dialog&) = delete;
+	Dialog& operator=(const Dialog&) = delete;
+
 	/**
 	* @throws LastErrorException
 	*/
@@ -56,7 +59,7 @@ private:
     virtual void onInit() = 0;
 	virtual bool showContextMenu(int p_xPos, int p_yPos);
 
-	std::string m_defaultTitle;
+	const std::string m_defaultTitle;
 	const ResourceId m_resourceId;
     CommandHandlersContainer m_commandMsgHandlers;
     NotifyHandlersContainer m_notifyMsgHandlers;
