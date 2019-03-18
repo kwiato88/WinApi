@@ -4,6 +4,8 @@
 
 #include "CommonDialogs.hpp"
 #include "Clipboard.hpp"
+#include "WinApiShellCommand.hpp"
+#include "WinApiLastErrorException.hpp"
 
 class Printer
 {
@@ -226,13 +228,54 @@ void copyFromClipboard()
 	out.testFinished();
 }
 
+void shellCommand1()
+{
+	out.testStarted("open txt file");
+	WinApi::ShellCommand viewText("D:\\test.txt", "");
+	viewText.execute();
+	out.testFinished();
+}
+
+void shellCommand2()
+{
+	out.testStarted("run ctags.exe");
+	WinApi::ShellCommand ctags("D:\\universal_ctags\\ctags.exe", "");
+	ctags.execute();
+	out.testFinished();
+
+	out.testStarted("run ctags.exe --help");
+	WinApi::ShellCommand ctagsHelp("D:\\universal_ctags\\ctags.exe", "--help");
+	ctagsHelp.execute();
+	out.testFinished();
+
+	out.testStarted("copy file");
+	WinApi::ShellCommand notepad("cp", "d:\\test.txt d:\\test1.txt");
+	notepad.execute();
+	out.testFinished();
+}
+
+void shellCommanddFailed()
+{
+	out.testStarted("open unexisting path");
+	try
+	{
+		WinApi::ShellCommand invalidApp("D:\\myProg.exe", "-a asd");
+		invalidApp.execute();
+	}
+	catch (WinApi::Exception& e)
+	{
+		out.print(e.what());
+	}
+	out.testFinished();
+}
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main()
 {
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
-		
+		/*
 		copyFromClipboard();
 		copyToClipboard();
 		listDialog();
@@ -244,6 +287,10 @@ int main()
 		selectDirPathsDailog();
 		selectFilePathsDailog();
 		messageDialog();
+		*/
+		shellCommand1();
+		shellCommand2();
+		shellCommanddFailed();
 	}
 	catch (std::exception& e)
 	{
