@@ -43,6 +43,8 @@ void Process::start()
 std::string Process::wait()
 {
 	WaitForSingleObject(processInfo.hProcess, INFINITE);
+	CloseHandle(processInfo.hProcess);
+	CloseHandle(processInfo.hThread);
 	return "";
 }
 
