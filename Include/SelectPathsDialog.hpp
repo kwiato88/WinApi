@@ -28,7 +28,7 @@ public:
 
     void setInitalPath(const std::string& p_path);
     void setPaths(const std::vector<std::string>& p_paths);
-    std::vector<std::string> getPaths();
+    std::vector<std::string> getPaths() const;
 
 private:
     void onInit() override;
@@ -38,8 +38,8 @@ private:
     void onAddClick();
     void onSelectClick();
     void onDeleteClick();
-	void copyAll();
-	void copySelected();
+	void copyAll() const;
+	void copySelected() const;
 
     void addItemToControl(const std::string& p_newItem);
 

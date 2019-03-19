@@ -21,7 +21,7 @@ public:
 
     void addColumns(const std::vector<std::string>& p_labels);
     void addRows(const std::vector<std::vector<std::string> >& p_rows);
-    int getSelectedRowIndex();
+    int getSelectedRowIndex() const;
 
 private:
     static void initListViewControl();

@@ -17,7 +17,7 @@ public:
 	std::string getContent() const;
 	void setContent(const std::string& p_content);
 	void setSelection(int p_begin, int p_end);
-	int getLineLength(int p_lineNum);
+	int getLineLength(int p_lineNum) const;
 };
 
 }

@@ -60,14 +60,14 @@ bool TreeDialog::showContextMenu(int p_xPos, int p_yPos)
 	}
 	return false;
 }
-void TreeDialog::copyAll()
+void TreeDialog::copyAll() const
 {
 	NodeExport toCopy(exportData);
 	for(const auto& node : m_treeNodes)
 		toCopy.append(node);
 	Clipboard::set(Clipboard::String(toCopy.result()));
 }
-void TreeDialog::copySelectedSubTree()
+void TreeDialog::copySelectedSubTree() const
 {
 	const Node* subTree = m_tree.getSelectedNode();
 	if (subTree != nullptr)
@@ -77,7 +77,7 @@ void TreeDialog::copySelectedSubTree()
 		Clipboard::set(Clipboard::String(toCopy.result()));
 	}
 }
-void TreeDialog::copySelected()
+void TreeDialog::copySelected() const
 {
 	const Node* subTree = m_tree.getSelectedNode();
 	if (subTree != nullptr)

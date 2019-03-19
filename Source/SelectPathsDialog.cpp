@@ -106,7 +106,7 @@ void SelectPathsDialog<selector>::onDeleteClick()
 }
 
 template <SelectorType selector>
-std::vector<std::string> SelectPathsDialog<selector>::getPaths()
+std::vector<std::string> SelectPathsDialog<selector>::getPaths() const
 {
     std::vector<std::string> l_paths;
     for(const auto& path : m_paths)
@@ -142,7 +142,7 @@ bool SelectPathsDialog<selector>::showContextMenu(int p_xPos, int p_yPos)
 	return false;
 }
 template <SelectorType selector>
-void SelectPathsDialog<selector>::copyAll()
+void SelectPathsDialog<selector>::copyAll() const
 {
 	std::string toCopy;
 	for (const auto row : m_paths)
@@ -150,7 +150,7 @@ void SelectPathsDialog<selector>::copyAll()
 	Clipboard::set(Clipboard::String(toCopy));
 }
 template <SelectorType selector>
-void SelectPathsDialog<selector>::copySelected()
+void SelectPathsDialog<selector>::copySelected() const
 {
 	auto selected = m_itemsControl.getSelectedRowIndex();
 	if (selected != -1)

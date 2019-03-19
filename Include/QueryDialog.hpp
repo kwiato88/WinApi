@@ -14,7 +14,7 @@ public:
 
 	void setQuestion(const std::string& p_txt);
 	void setInitialResponse(const std::string& p_txt);
-	std::string getResponse();
+	std::string getResponse() const;
 
 private:
 	void onInit() override;

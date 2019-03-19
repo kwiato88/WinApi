@@ -43,7 +43,7 @@ int SelectFilePathDialog::show()
 	return Dialog::RESULT_CANCEL;
 }
 
-std::string SelectFilePathDialog::getSelectedPath()
+std::string SelectFilePathDialog::getSelectedPath() const
 {
 	return m_selectedPath;
 }

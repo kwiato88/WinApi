@@ -60,14 +60,14 @@ bool GridDialog::showContextMenu(int p_xPos, int p_yPos)
 	return false;
 }
 
-void GridDialog::copyAll()
+void GridDialog::copyAll() const
 {
 	std::string toCopy;
 	for (const auto row : m_gridRows)
 		toCopy += rowToStr(row, exportData);
 	Clipboard::set(Clipboard::String(toCopy));
 }
-void GridDialog::copySelected()
+void GridDialog::copySelected() const
 {
 	auto selected = m_gridControl.getSelectedRowIndex();
 	if (selected != -1)

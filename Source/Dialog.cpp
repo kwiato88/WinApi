@@ -65,7 +65,7 @@ BOOL Dialog::dispatchCommandMsg(WPARAM p_wParam)
     return FALSE;
 }
 
-int Dialog::adjustPosX(int p_x)
+int Dialog::adjustPosX(int p_x) const
 {
 	if (p_x != -1)
 		return p_x;
@@ -75,7 +75,7 @@ int Dialog::adjustPosX(int p_x)
 	return rec.left;
 }
 
-int Dialog::adjustPosY(int p_y)
+int Dialog::adjustPosY(int p_y) const
 {
 	if (p_y != -1)
 		return p_y;
@@ -159,7 +159,7 @@ void Dialog::setTitle(const std::string& p_title)
 	SetWindowText(m_self, title);
 }
 
-Handle Dialog::getItem(ResourceId p_itemId)
+Handle Dialog::getItem(ResourceId p_itemId) const
 {
     return Handle(GetDlgItem(m_self, p_itemId));
 }

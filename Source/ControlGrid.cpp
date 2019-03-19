@@ -90,7 +90,7 @@ void Grid::addCellInRow(const std::string& p_value, int p_row, int p_cell)
         ListView_SetItem(self, &Lv_i);
 }
 
-int Grid::getSelectedRowIndex()
+int Grid::getSelectedRowIndex() const
 {
     return ListView_GetNextItem(self, -1, LVNI_SELECTED);
 }

@@ -38,9 +38,9 @@ private:
 	bool showContextMenu(int p_xPos, int p_yPos) override;
     void onOkClick();
     void onCancleClick();
-	void copyAll();
-	void copySelectedSubTree();
-	void copySelected();
+	void copyAll() const;
+	void copySelectedSubTree() const;
+	void copySelected() const;
 
 	Control::Tree m_tree;
 	const void* m_selectedItemUserContext;

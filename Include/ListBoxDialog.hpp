@@ -30,9 +30,9 @@ private:
     void setListBoxItems();
     void setListBoxHorizontalScroll();
     void setFocusOnListBox();
-    Handle getListBoxHandle();
-	void copyAll();
-	void copySelected();
+    Handle getListBoxHandle() const;
+	void copyAll() const;
+	void copySelected() const;
 
     int m_selectedItemIndex;
     std::vector<std::string> m_items;

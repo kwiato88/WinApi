@@ -22,7 +22,7 @@ Tree::Item Tree::Item::addChild(const Node& p_node)
 	return Item(p_node, *this);
 }
 
-const Node* Tree::Item::getNode()
+const Node* Tree::Item::getNode() const
 {
 	if (nativeItem != 0)
 	{
@@ -35,7 +35,7 @@ const Node* Tree::Item::getNode()
 	return nullptr;
 }
 
-const void* Tree::Item::getUserContext()
+const void* Tree::Item::getUserContext() const
 {
 	const Node* node = getNode();
 	if (node != nullptr)
@@ -76,13 +76,13 @@ void Tree::addRoot(const Node& p_root)
 	addItem(p_root, root);
 }
 
-const void* Tree::getSelectedItemContext()
+const void* Tree::getSelectedItemContext() const
 {
 	Item selectedItem(self, TreeView_GetSelection(self));
 	return selectedItem.getUserContext();
 }
 
-const Node* Tree::getSelectedNode()
+const Node* Tree::getSelectedNode() const
 {
 	Item selectedItem(self, TreeView_GetSelection(self));
 	return selectedItem.getNode();

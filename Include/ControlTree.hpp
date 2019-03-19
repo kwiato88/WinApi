@@ -23,8 +23,8 @@ class Tree : public Control
 		Item(Handle p_tree, HTREEITEM p_nativeItem);
 
 		Item addChild(const Node& p_node);
-		const void* getUserContext();
-		const Node* getNode();
+		const void* getUserContext() const;
+		const Node* getNode() const;
 
 	private:
 		Item(const Node& p_node, const Item& p_parrent);
@@ -44,8 +44,8 @@ class Tree : public Control
 
 public:
 	void addRoot(const Node& p_root);
-	const void* getSelectedItemContext();
-	const Node* getSelectedNode();
+	const void* getSelectedItemContext() const;
+	const Node* getSelectedNode() const;
 
 private:
 	void addItem(const Node& p_node, Item& p_parrent);

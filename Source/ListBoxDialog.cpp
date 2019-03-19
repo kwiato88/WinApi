@@ -73,7 +73,7 @@ void ListBoxDialog::onInit()
     setFocusOnListBox();
 }
 
-Handle ListBoxDialog::getListBoxHandle()
+Handle ListBoxDialog::getListBoxHandle() const
 {
     return getItem(ResourceId(ID_LIST_BOX));
 }
@@ -136,7 +136,7 @@ bool ListBoxDialog::showContextMenu(int p_xPos, int p_yPos)
 	return true;
 }
 
-void ListBoxDialog::copyAll()
+void ListBoxDialog::copyAll() const
 {
 	std::string out;
 	for (const auto& row : m_items)
@@ -144,7 +144,7 @@ void ListBoxDialog::copyAll()
 	Clipboard::set(Clipboard::String(out));
 }
 
-void ListBoxDialog::copySelected()
+void ListBoxDialog::copySelected() const
 {
 	auto selected = (int)SendMessage(getListBoxHandle(), LB_GETCURSEL, 0, 0);
 	if (selected < m_items.size())

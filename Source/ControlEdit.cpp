@@ -31,7 +31,7 @@ void Edit::setSelection(int p_begin, int p_end)
 	Edit_SetSel(self, p_begin, p_end);
 }
 
-int Edit::getLineLength(int p_lineNum)
+int Edit::getLineLength(int p_lineNum) const
 {
 	return Edit_LineLength(self, p_lineNum);
 }

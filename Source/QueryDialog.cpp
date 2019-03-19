@@ -45,7 +45,7 @@ void QueryDialog::setInitialResponse(const std::string& p_txt)
 	initialResponse = p_txt;
 }
 
-std::string QueryDialog::getResponse()
+std::string QueryDialog::getResponse() const
 {
 	return response;
 }

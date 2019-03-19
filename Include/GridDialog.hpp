@@ -35,8 +35,8 @@ private:
     void onOkClick();
     void onCancleClick();
     void onGridDoubleClick();
-	void copyAll();
-	void copySelected();
+	void copyAll() const;
+	void copySelected() const;
 
 	Control::RcFileGrid m_gridControl;
 

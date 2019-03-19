@@ -12,7 +12,7 @@ class SelectFilePathDialog
 public:
 	SelectFilePathDialog(Handle p_parrent, const std::string& p_comment, const std::string& p_initialDir);
 	int show();
-	std::string getSelectedPath();
+	std::string getSelectedPath() const;
 
 private:
 	Handle m_parrent;

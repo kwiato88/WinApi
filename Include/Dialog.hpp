@@ -38,7 +38,7 @@ protected:
 	void setTitle(const std::string& p_title);
     void close(int p_returnCode);
 	void redraw();
-	Handle getItem(ResourceId p_itemId);
+	Handle getItem(ResourceId p_itemId) const;
 	static Handle getFocus();
 
     InstanceHandle m_hInstance;
@@ -54,8 +54,8 @@ private:
     BOOL dispatchCommandMsg(WPARAM p_wParam);
     BOOL dispatchNotifyMsg(LPARAM p_lParam);
 	BOOL handleContextMenuMsg(LPARAM p_lParam);
-	int adjustPosX(int p_x);
-	int adjustPosY(int p_y);
+	int adjustPosX(int p_x) const;
+	int adjustPosY(int p_y) const;
     virtual void onInit() = 0;
 	virtual bool showContextMenu(int p_xPos, int p_yPos);
 

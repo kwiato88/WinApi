@@ -31,7 +31,7 @@ public:
 	NodeExport(const Copy& p_data = Copy{ "\t", "\n" });
 
 	void append(const Node& p_node);
-	std::string result();
+	std::string result() const;
 
 private:
 	void appendIndent();

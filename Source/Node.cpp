@@ -39,7 +39,7 @@ void NodeExport::append(const Node& p_node)
 	--indentLvl;
 }
 
-std::string NodeExport::result()
+std::string NodeExport::result() const
 {
 	return out;
 }
