@@ -16,7 +16,7 @@ void ShellCommand::execute()
 {
 	int code = (int)ShellExecuteA(
 		NULL, // hwnd
-		"open", // lpOperation
+		NULL, // lpOperation
 		(path.empty() ? NULL : path.c_str()), // lpFile
 		(parameters.empty() ? NULL : parameters.c_str()), // lpParameters
 		NULL, // lpDirectory

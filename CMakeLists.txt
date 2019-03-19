@@ -30,6 +30,7 @@ add_library(
     Source/Clipboard.cpp
     Source/ContextMenu.cpp
     Source/WinApiShellCommand.cpp
+    Source/WinApiProcess.cpp
 )
 
 target_include_directories(
