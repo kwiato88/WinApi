@@ -93,6 +93,7 @@ public:
 	void runAll();
 	void run(Matching p_pattern);
 	void run(NotMatching p_pattern);
+	void names();
 
 private:
 	struct TestUnit
@@ -123,6 +124,15 @@ void Tests::run(const TestUnit& p_test)
 		out.print("Excpetion during test: ", e.what());
 	}
 	out.testFinished();
+}
+
+void Tests::names()
+{
+	out.print("Tests names:");
+	out.addIndent();
+	for (const auto& test : tests)
+		out.print(test.name);
+	out.removeIndent();
 }
 
 void Tests::runAll()
@@ -373,7 +383,8 @@ enum class RunMode
 {
 	All,
 	Matching,
-	NotMatching
+	NotMatching,
+	PrintNames
 };
 
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
@@ -382,15 +393,20 @@ int main(int argc, char* argv[])
 	if (!areParamsOk(argc, argv))
 	{
 		std::cerr << "Invalid params" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " [ testNamePattern | not testNamePattern | printNames ]" << std::endl;
 		return 1;
 	}
 
 	std::string testsNamesPattern;
 	RunMode mode = RunMode::All;
-	if (argc == 2)
+	if (argc == 2 && std::string(argv[1]) != "printNames")
 	{
 		mode = RunMode::Matching;
 		testsNamesPattern = argv[1];
+	}
+	if (argc == 2 && std::string(argv[1]) == "printNames")
+	{
+		mode = RunMode::PrintNames;
 	}
 	if (argc == 3)
 	{
@@ -422,6 +438,8 @@ int main(int argc, char* argv[])
 		testSuite.add("convert string: tstr -> str", &tstringTostring);
 		testSuite.add("convert string: str -> tstr", &stringToTstring);
 
+		if (mode == RunMode::PrintNames)
+			testSuite.names();
 		if(mode == RunMode::All)
 			testSuite.runAll();
 		if(mode == RunMode::Matching)
