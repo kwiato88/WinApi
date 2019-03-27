@@ -2,6 +2,7 @@
 #include <Shlobj.h>
 #include "SelectFilePathDialog.hpp"
 #include "Dialog.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -16,8 +17,8 @@ int SelectFilePathDialog::show()
 	TCHAR l_filePath[_MAX_PATH] = TEXT("");
 	TCHAR l_title[12] = TEXT("");
 	TCHAR l_initialDir[_MAX_PATH] = TEXT("");
-	mbstowcs(l_title, m_comment.c_str(), 11);
-	mbstowcs(l_initialDir, m_initialDir.c_str(), _MAX_PATH - 1);
+	stringToArray(m_comment, l_title);
+	stringToArray(m_initialDir, l_initialDir);
 
 	ZeroMemory(&l_winApiFilePath, sizeof(l_winApiFilePath));
 	l_winApiFilePath.lStructSize = sizeof(l_winApiFilePath);
@@ -33,9 +34,7 @@ int SelectFilePathDialog::show()
 
 	if (GetOpenFileName(&l_winApiFilePath))
 	{
-		char l_filePathBuff[_MAX_PATH];
-		wcstombs(l_filePathBuff, l_filePath, _MAX_PATH - 1);
-		m_selectedPath = l_filePathBuff;
+		m_selectedPath = arrayToString(l_filePath);
 		return Dialog::RESULT_OK;
 	}
 	

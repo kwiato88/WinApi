@@ -40,11 +40,11 @@ std::string pointerToString(const TCHAR* p_string)
 }
 
 template<std::size_t MaxSize>
-void stringToArray(const std::string& p_inStr, TCHAR(&p_outStr)[MaxSize])
+std::size_t stringToArray(const std::string& p_inStr, TCHAR(&p_outStr)[MaxSize])
 {
 	return stringToPoiner(p_inStr, p_outStr, MaxSize);
 }
 
-void stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize);
+std::size_t stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize);
 
 }

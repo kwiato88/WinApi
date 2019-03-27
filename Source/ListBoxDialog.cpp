@@ -9,6 +9,7 @@
 #include "DialogMsgMatchers.hpp"
 #include "ContextMenu.hpp"
 #include "Clipboard.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -23,7 +24,7 @@ public:
     void operator()(const std::string& p_item)
     {
 		TCHAR l_itemString[1024];
-		mbstowcs(l_itemString, p_item.c_str(), 1024 - 1);
+		stringToArray(p_item, l_itemString);
         SendMessage(m_list, LB_ADDSTRING, 0, (LPARAM)l_itemString);
     }
 

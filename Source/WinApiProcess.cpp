@@ -1,6 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include "WinApiProcess.hpp"
 #include "WinApiLastErrorException.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -113,7 +114,7 @@ std::string Process::execute()
 void Process::start()
 {
 	TCHAR cmd[1024] = TEXT("");
-	mbstowcs(cmd, command.c_str(), 1024 - 1);
+	stringToArray(command, cmd);
 
 	processOut.apply(startupInfo);
 	prosessIn.apply(startupInfo);

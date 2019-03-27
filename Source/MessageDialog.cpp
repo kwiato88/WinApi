@@ -1,5 +1,6 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include "MessageDialog.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -88,9 +89,9 @@ MessageDialog::Button MessageDialog::show()
 	static const size_t MAX_CONTENT_LENGTH = 256;
 	static const size_t MAX_TITLE_LENGTH = 64;
 	TCHAR messageUString[MAX_CONTENT_LENGTH];
-	mbstowcs(messageUString, cutString(content, MAX_CONTENT_LENGTH).c_str(), MAX_CONTENT_LENGTH - 1);
+	stringToArray(cutString(content, MAX_CONTENT_LENGTH), messageUString);
 	TCHAR titleUString[MAX_TITLE_LENGTH];
-	mbstowcs(titleUString, cutString(title, MAX_TITLE_LENGTH).c_str(), MAX_TITLE_LENGTH - 1);
+	stringToArray(cutString(title, MAX_TITLE_LENGTH), titleUString);
 	return toButton(MessageBox(parent, messageUString, titleUString, toInt(icon) | toInt(buttons)));
 }
 

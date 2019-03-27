@@ -6,18 +6,19 @@ namespace WinApi
 namespace
 {
 
-void stringToWchar(const std::string& p_in, wchar_t* p_out, std::size_t p_maxLen)
+std::size_t stringToWchar(const std::string& p_in, wchar_t* p_out, std::size_t p_maxLen)
 {
-	mbstowcs(p_out, p_in.c_str(), p_maxLen - 1);
+	return mbstowcs(p_out, p_in.c_str(), p_maxLen - 1);
 }
-void stringToChar(const std::string& p_in, char*p_out, std::size_t p_maxLen)
+std::size_t stringToChar(const std::string& p_in, char*p_out, std::size_t p_maxLen)
 {
 	strncpy(p_out, p_in.c_str(), p_maxLen -  1);
+	return strlen(p_out);
 }
 
 }
 
-void stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize)
+std::size_t stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize)
 {
 #ifdef  UNICODE
 	return stringToWchar(p_inStr, p_outStr, p_maxSize);

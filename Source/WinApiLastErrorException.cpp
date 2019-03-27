@@ -1,6 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <boost/lexical_cast.hpp>
 #include "WinApiLastErrorException.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -30,9 +31,7 @@ std::string LastError::describe() const
 	if (errorDescription == NULL)
 		return message;
 	
-	char descriptionBuffer[1024];
-	wcstombs(descriptionBuffer, errorDescription, 1024 - 1);
-	return (message + ". Error message: " + descriptionBuffer);
+	return (message + ". Error message: " + pointerToString<1024>(errorDescription));
 }
 
 Exception::Exception(const std::string& p_what)

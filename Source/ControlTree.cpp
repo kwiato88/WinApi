@@ -1,5 +1,6 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include "ControlTree.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -47,7 +48,7 @@ TVINSERTSTRUCT Tree::Item::buildInsertStruct(const Node& p_node, HTREEITEM p_par
 {
 	TVITEM item;
 	item.mask = TVIF_TEXT | TVIF_PARAM;
-	item.cchTextMax = mbstowcs(nativeText, p_node.m_value.c_str(), _MAX_PATH - 1);
+	item.cchTextMax = stringToArray(p_node.m_value, nativeText);
 	item.pszText = nativeText;
 	item.lParam = (LPARAM)(&p_node);
 

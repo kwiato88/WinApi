@@ -4,6 +4,7 @@
 #include <commctrl.h>
 
 #include "ControlEdit.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -14,15 +15,13 @@ std::string Edit::getContent() const
 {
 	TCHAR contentBuffer[_MAX_PATH] = TEXT("");
 	Edit_GetText(self, contentBuffer, _MAX_PATH);
-	char content[_MAX_PATH];
-	wcstombs(content, contentBuffer, _MAX_PATH - 1);
-	return content;
+	return arrayToString(contentBuffer);
 }
 
 void Edit::setContent(const std::string& p_content)
 {
 	TCHAR content[_MAX_PATH] = TEXT("");
-	mbstowcs(content, p_content.c_str(), _MAX_PATH - 1);
+	stringToArray(p_content, content);
 	Edit_SetText(self, content);
 }
 

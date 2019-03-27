@@ -1,5 +1,6 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include "ControlGrid.hpp"
+#include "StringConversion.hpp"
 #include <commctrl.h>
 #include <functional>
 #include <boost/range/algorithm/for_each.hpp>
@@ -33,7 +34,7 @@ void DynamicGrid::init(Handle p_parent, InstanceHandle p_app,
                 int p_posX, int p_posY, int p_sizeX, int p_sizeY)
 {
     self = CreateWindow(WC_LISTVIEW, 
-                        L"",
+                        TEXT(""),
                         WS_CHILD | LVS_REPORT | LVS_EDITLABELS | WS_VISIBLE,
                         p_posX, p_posY,
                         p_sizeX,
@@ -52,7 +53,7 @@ void Grid::addColumns(const std::vector<std::string>& p_labels)
 void Grid::addColumn(const std::string& p_title)
 {
     TCHAR l_columnLabel[64];
-    mbstowcs(l_columnLabel, p_title.c_str(), 63);
+	stringToArray(p_title, l_columnLabel);
     LVCOLUMN l_col;
     l_col.mask = LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
 	l_col.cx = 100;
@@ -78,7 +79,7 @@ void Grid::addRow(const std::vector<std::string>& p_cells)
 void Grid::addCellInRow(const std::string& p_value, int p_row, int p_cell)
 {
     TCHAR l_value[256];
-    mbstowcs(l_value, p_value.c_str(), 255);
+	stringToArray(p_value, l_value);
     LV_ITEM Lv_i; 
 	Lv_i.mask = LVIF_TEXT;
     Lv_i.iItem = p_row;

@@ -1,6 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include "ContextMenu.hpp"
 #include "WinApiLastErrorException.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -22,7 +23,7 @@ ContextMenu::~ContextMenu()
 void ContextMenu::add(const Item& p_menuItem)
 {
 	TCHAR label[256] = TEXT("");
-	mbstowcs(label, p_menuItem.label.c_str(), 256 - 1);
+	stringToArray(p_menuItem.label, label);
 	if (InsertMenu(
 			self,
 			-1, //add to end

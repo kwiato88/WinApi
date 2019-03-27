@@ -2,6 +2,7 @@
 #include <Shlobj.h>
 #include "SelectDirPathDialog.hpp"
 #include "Dialog.hpp"
+#include "StringConversion.hpp"
 
 namespace WinApi
 {
@@ -23,8 +24,8 @@ int SelectDirPathDialog::show()
 	TCHAR l_dirPath[MAX_PATH] = TEXT("");
 	TCHAR l_initialDir[_MAX_PATH] = TEXT("");
 	TCHAR l_comment[64] = TEXT("");
-	mbstowcs(l_comment, m_comment.c_str(), 63);
-	mbstowcs(l_initialDir, m_initialDir.c_str(), _MAX_PATH - 1);
+	stringToArray(m_comment, l_comment);
+	stringToArray(m_initialDir, l_initialDir);
 
 	ZeroMemory(&l_winApiDirPath, sizeof(l_winApiDirPath));
 	l_winApiDirPath.hwndOwner = m_parrent;
@@ -42,9 +43,7 @@ int SelectDirPathDialog::show()
 	{
 		if (SHGetPathFromIDList(lpItem, l_dirPath))
 		{
-			char l_dirPathBuff[_MAX_PATH];
-			wcstombs(l_dirPathBuff, l_dirPath, _MAX_PATH - 1);
-			m_selectedPath = l_dirPathBuff;
+			m_selectedPath = arrayToString(l_dirPath);
 			return Dialog::RESULT_OK;
 		}
 	}
