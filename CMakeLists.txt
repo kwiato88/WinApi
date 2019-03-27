@@ -28,6 +28,7 @@ add_library(
     Source/WinApiFilePathGetter.cpp
     Source/WinApiLastErrorException.cpp
     Source/Clipboard.cpp
+    Source/StringConversion.cpp
     Source/ContextMenu.cpp
     Source/WinApiShellCommand.cpp
     Source/WinApiProcess.cpp

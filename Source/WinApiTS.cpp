@@ -7,6 +7,7 @@
 #include "WinApiShellCommand.hpp"
 #include "WinApiProcess.hpp"
 #include "WinApiLastErrorException.hpp"
+#include "StringConversion.hpp"
 
 class Printer
 {
@@ -297,13 +298,24 @@ void executeProcess2()
 	out.testFinished();
 }
 
+void conversStrings()
+{
+	out.testStarted("TCHAR[] to std::string");
+
+	TCHAR someStr[100] = TEXT("Hello");
+	std::string outStr = WinApi::arrayToString(someStr);
+	out.print("Convertes std: ", outStr);
+
+	out.testFinished();
+}
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main()
 {
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
-
+		/*
 		copyFromClipboard();
 		copyToClipboard();
 		listDialog();
@@ -320,6 +332,8 @@ int main()
 		shellCommanddFailed();
 		executeProcess1();
 		executeProcess2();
+		*/
+		conversStrings();
 	}
 	catch (std::exception& e)
 	{
