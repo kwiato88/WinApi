@@ -15,7 +15,7 @@ int SelectFilePathDialog::show()
 {
 	OPENFILENAME l_winApiFilePath;
 	TCHAR l_filePath[_MAX_PATH] = TEXT("");
-	TCHAR l_title[12] = TEXT("");
+	TCHAR l_title[64] = TEXT("");
 	TCHAR l_initialDir[_MAX_PATH] = TEXT("");
 	stringToArray(m_comment, l_title);
 	stringToArray(m_initialDir, l_initialDir);

@@ -155,7 +155,7 @@ void Dialog::redraw()
 
 void Dialog::setTitle(const std::string& p_title)
 {
-	TCHAR title[_MAX_PATH] = TEXT("");
+	TCHAR title[512] = TEXT("");
 	stringToArray(p_title, title);
 	SetWindowText(m_self, title);
 }

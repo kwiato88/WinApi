@@ -9,7 +9,7 @@ namespace Control
 
 void Text::setContent(const std::string& p_content)
 {
-	TCHAR content[_MAX_PATH] = TEXT("");
+	TCHAR content[1024] = TEXT("");
 	stringToArray(p_content, content);
 	SetWindowText(self, content);
 }

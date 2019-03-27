@@ -33,7 +33,7 @@ class Tree : public Control
 
 		Handle tree = {};
 		HTREEITEM nativeItem = {};	
-		TCHAR nativeText[_MAX_PATH] = TEXT("");
+		TCHAR nativeText[512] = TEXT("");
 	};
 
 	class RootItem : public Item

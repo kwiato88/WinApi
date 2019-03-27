@@ -21,9 +21,9 @@ static int CALLBACK browseCallback(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM l
 int SelectDirPathDialog::show()
 {
 	BROWSEINFO l_winApiDirPath;
-	TCHAR l_dirPath[MAX_PATH] = TEXT("");
+	TCHAR l_dirPath[_MAX_PATH] = TEXT("");
 	TCHAR l_initialDir[_MAX_PATH] = TEXT("");
-	TCHAR l_comment[64] = TEXT("");
+	TCHAR l_comment[512] = TEXT("");
 	stringToArray(m_comment, l_comment);
 	stringToArray(m_initialDir, l_initialDir);
 

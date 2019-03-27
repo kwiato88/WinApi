@@ -78,7 +78,7 @@ void Grid::addRow(const std::vector<std::string>& p_cells)
 
 void Grid::addCellInRow(const std::string& p_value, int p_row, int p_cell)
 {
-    TCHAR l_value[256];
+    TCHAR l_value[1024];
 	stringToArray(p_value, l_value);
     LV_ITEM Lv_i; 
 	Lv_i.mask = LVIF_TEXT;

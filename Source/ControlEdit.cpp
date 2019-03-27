@@ -13,14 +13,14 @@ namespace Control
 
 std::string Edit::getContent() const
 {
-	TCHAR contentBuffer[_MAX_PATH] = TEXT("");
-	Edit_GetText(self, contentBuffer, _MAX_PATH);
+	TCHAR contentBuffer[1024] = TEXT("");
+	Edit_GetText(self, contentBuffer, 1024);
 	return arrayToString(contentBuffer);
 }
 
 void Edit::setContent(const std::string& p_content)
 {
-	TCHAR content[_MAX_PATH] = TEXT("");
+	TCHAR content[1024] = TEXT("");
 	stringToArray(p_content, content);
 	Edit_SetText(self, content);
 }

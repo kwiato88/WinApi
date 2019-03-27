@@ -86,7 +86,7 @@ void MessageDialog::withContent(const std::string& c)
 
 MessageDialog::Button MessageDialog::show()
 {
-	static const size_t MAX_CONTENT_LENGTH = 256;
+	static const size_t MAX_CONTENT_LENGTH = 1024;
 	static const size_t MAX_TITLE_LENGTH = 64;
 	TCHAR messageUString[MAX_CONTENT_LENGTH];
 	stringToArray(cutString(content, MAX_CONTENT_LENGTH), messageUString);

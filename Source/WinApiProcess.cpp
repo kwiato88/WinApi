@@ -113,7 +113,7 @@ std::string Process::execute()
 
 void Process::start()
 {
-	TCHAR cmd[1024] = TEXT("");
+	TCHAR cmd[2048] = TEXT("");
 	stringToArray(command, cmd);
 
 	processOut.apply(startupInfo);
