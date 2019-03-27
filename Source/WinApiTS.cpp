@@ -1,6 +1,7 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <Windows.h>
 #include <iostream>
+#include <functional>
 
 #include "CommonDialogs.hpp"
 #include "Clipboard.hpp"
@@ -8,6 +9,8 @@
 #include "WinApiProcess.hpp"
 #include "WinApiLastErrorException.hpp"
 #include "StringConversion.hpp"
+
+WinApi::InstanceHandle hModule;
 
 class Printer
 {
@@ -72,12 +75,71 @@ private:
 };
 
 Printer out;
-WinApi::InstanceHandle hModule;
+
+class Tests
+{
+public:
+	typedef std::function<void()> Test;
+	
+	void add(const std::string& p_name, Test p_test);
+	void runAll();
+	void run(const std::string& p_pattern);
+
+private:
+	struct TestUnit
+	{
+		std::string name;
+		Test test;
+	};
+	void run(const TestUnit& p_test);
+	bool matches(const std::string& p_name, const std::string& p_pattern);
+
+	std::list<TestUnit> tests;
+};
+
+void Tests::add(const std::string& p_name, Tests::Test p_test)
+{
+	tests.push_back(TestUnit{ p_name, p_test });
+}
+
+void Tests::run(const TestUnit& p_test)
+{
+	out.testStarted(p_test.name);
+	try
+	{
+		p_test.test();
+	}
+	catch (std::exception& e)
+	{
+		out.print("Excpetion during test: ", e.what());
+	}
+	out.testFinished();
+}
+
+void Tests::runAll()
+{
+	out.print("Runing all tests\n");
+	for (const auto& test : tests)
+		run(test);
+}
+
+bool Tests::matches(const std::string& p_name, const std::string& p_pattern)
+{
+	return p_name.find(p_pattern) != std::string::npos;
+}
+
+void Tests::run(const std::string& p_pattern)
+{
+	out.print(std::string("Runing tests matching pattern ") + p_pattern + "\n");
+	for (const auto& test : tests)
+		if (matches(test.name, p_pattern))
+			run(test);
+}
+
+Tests testSuite;
 
 void listDialog()
 {
-	out.testStarted("WinApi::ListBoxDialog");
-
 	WinApi::ListBoxDialog dlg(hModule, WinApi::Handle(0), "select item from list", "|");
 	dlg.setItems({ "string 1", "string 2", "string3" });
 	auto returnCode = dlg.show();
@@ -85,13 +147,10 @@ void listDialog()
 
 	out.print("return code: ", returnCode);
 	out.print("selected item: ", selected);
-	out.testFinished();
 }
 
 void gridDialog()
 {
-	out.testStarted("WinApi::GridDialog");
-
 	WinApi::GridDialog dlg(hModule, WinApi::Handle(0), "select row");
 	dlg.setTitles({ "col 1", "col2" });
 	dlg.setContent({ {"cel 11", "cell 22"}, {"cell21", "cell22"} });
@@ -100,13 +159,10 @@ void gridDialog()
 
 	out.print("return code: ", returnCode);
 	out.print("selected: ", selected);
-	out.testFinished();
 }
 
 void queryDialog()
 {
-	out.testStarted("WinApi::QueryDialog");
-
 	WinApi::QueryDialog dlg(hModule, WinApi::Handle(0));
 	dlg.setInitialResponse("initial resp");
 	dlg.setQuestion("to be or not to be?");
@@ -115,13 +171,10 @@ void queryDialog()
 
 	out.print("return code: ", code);
 	out.print("response: ", resp);
-	out.testFinished();
 }
 
 void treeDialog()
 {
-	out.testStarted("WinApi::TreeDialog");
-
 	WinApi::TreeDialog dlg(hModule, WinApi::Handle(0), "widow title", WinApi::NodeExport::Copy{ "*", ";" });
 	int rootCon = 0;
 	int child1Con = 1, child2Con = 2, child3Con = 3, child21Con = 4;
@@ -135,35 +188,26 @@ void treeDialog()
 
 	out.print("return code: ", code);
 	out.print("selected item context: ", (selectedCon ? *selectedCon : int(99)));
-	out.testFinished();
 }
 
 void selectDirPathDailog()
 {
-	out.testStarted("WinApi::SelectDirPathDialog");
-
 	WinApi::SelectDirPathDialog dlg(WinApi::Handle(0), "select folder", "D:\\");
 	auto code = dlg.show();
 	auto selected = dlg.getSelectedPath();
 
 	out.print("return code: ", code);
 	out.print("selected path: ", selected);
-
-	out.testFinished();
 }
 
 void selectFilePathDailog()
 {
-	out.testStarted("WinApi::SelectFilePathDialog");
-
 	WinApi::SelectFilePathDialog dlg(WinApi::Handle(0), "select file", "D:\\");
 	auto code = dlg.show();
 	auto selected = dlg.getSelectedPath();
 
 	out.print("return code: ", code);
 	out.print("selected path: ", selected);
-
-	out.testFinished();
 }
 
 template <WinApi::SelectorType DialogType>
@@ -185,22 +229,16 @@ void selectPathsDialog()
 }
 void selectDirPathsDailog()
 {
-	out.testStarted("WinApi::SelectPathsDialog<WinApi::SelectorType::Directory>");
 	selectPathsDialog<WinApi::SelectorType::Directory>();
-	out.testFinished();
 }
 
 void selectFilePathsDailog()
 {
-	out.testStarted("WinApi::SelectPathsDialog<WinApi::SelectorType::File>");
 	selectPathsDialog<WinApi::SelectorType::File>();
-	out.testFinished();
 }
 
 void messageDialog()
 {
-	out.testStarted("WinApi::MessageDialog");
-
 	out.print("message with warn, retry and cancel");
 	WinApi::MessageDialog message{ WinApi::Handle() };
 	message.withTitle("title");
@@ -222,53 +260,40 @@ void messageDialog()
 	message3.with(WinApi::MessageDialog::Buttons::Ok);
 	code = message3.show();
 	out.print("return code: ", WinApi::toStr(code));
-
-	out.testFinished();
 }
 
 void copyToClipboard()
 {
-	out.testStarted("copy to clipboard");
-
 	WinApi::Clipboard::set(WinApi::Clipboard::String("Test haha!"));
-
-	out.testFinished();
 }
 
 void copyFromClipboard()
 {
-	out.testStarted("copy from clipboard");
-
 	std::string txt = WinApi::Clipboard::getText();
 	
 	out.print("text from clipboard: ", txt);
-	out.testFinished();
 }
 
-void shellCommand1()
+void shellCommand_OpenFile()
 {
-	out.testStarted("open txt file");
 	WinApi::ShellCommand viewText("D:\\test.txt", "");
 	viewText.execute();
-	out.testFinished();
 }
 
-void shellCommand2()
+void shellCommand_runCtags()
 {
-	out.testStarted("run ctags.exe");
 	WinApi::ShellCommand ctags("D:\\universal_ctags\\ctags.exe", "");
 	ctags.execute();
-	out.testFinished();
-
-	out.testStarted("run ctags.exe --help");
-	WinApi::ShellCommand ctagsHelp("D:\\universal_ctags\\ctags.exe", "--help");
-	ctagsHelp.execute();
-	out.testFinished();
 }
 
-void shellCommanddFailed()
+void shellCommand_runCtagsWithHelp()
 {
-	out.testStarted("open unexisting path");
+	WinApi::ShellCommand ctagsHelp("D:\\universal_ctags\\ctags.exe", "--help");
+	ctagsHelp.execute();
+}
+
+void shellCommand_failed()
+{
 	try
 	{
 		WinApi::ShellCommand invalidApp("D:\\myProg.exe", "-a asd");
@@ -278,45 +303,28 @@ void shellCommanddFailed()
 	{
 		out.print(e.what());
 	}
-	out.testFinished();
 }
 
-void executeProcess1()
+void executeProcess_runCtags()
 {
-	out.testStarted("execute ctags.exe and print output");
-
 	WinApi::Process app("D:\\universal_ctags\\ctags.exe");
 	std::string output = "[";
 	output += app.execute();
 	output += "]";
 	out.print("ctags.exe out: ", output);
-
-	out.testFinished();
 }
 
-void executeProcess2()
+void executeProcess_runCtagsWithHelp()
 {
-	out.testStarted("execute ctags.exe with help and print output");
-
 	WinApi::Process app("D:\\universal_ctags\\ctags.exe --help");
 	std::string output = "[";
-	try {
-		output += app.execute();
-		output += "]";
-		out.print("ctags.exe out: ", output);
-	}
-	catch (std::exception& e)
-	{
-		out.print("Exception: ", e.what());
-	}
-
-	out.testFinished();
+	output += app.execute();
+	output += "]";
+	out.print("ctags.exe out: ", output);
 }
 
 void tstringTostring()
 {
-	out.testStarted("TCHAR[] to std::string");
-
 	TCHAR someStr[100] = TEXT("Hello");
 	std::string outStr = WinApi::arrayToString(someStr);
 	out.print("Converted std: ", outStr);
@@ -324,47 +332,51 @@ void tstringTostring()
 	TCHAR *someStr1 = TEXT("Hello");
 	std::string outStr1 = WinApi::pointerToString<10>(someStr1);
 	out.print("Converted std: ", outStr1);
-
-	out.testFinished();
 }
 
 void stringToTstring()
 {
-	out.testStarted("std::string to TCHAR[]");
-
 	std::string inStr = "Hello";
 	TCHAR outStr[10] = TEXT("");
 	WinApi::stringToArray(inStr, outStr);
 	out.wprint(TEXT("Converted TCHAR: "), outStr);
-
-	out.testFinished();
 }
 
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
-int main()
+int main(int argc, char* argv[])
 {
+	std::string testsNamesPattern;
+	if (argc > 1)
+		testsNamesPattern = argv[1];
+
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
 		
-		copyFromClipboard();
-		copyToClipboard();
-		listDialog();
-		gridDialog();
-		queryDialog();
-		treeDialog();
-		selectDirPathDailog();
-		selectFilePathDailog();
-		selectDirPathsDailog();
-		selectFilePathsDailog();
-		messageDialog();
-		shellCommand1();
-		shellCommand2();
-		shellCommanddFailed();
-		executeProcess1();
-		executeProcess2();
-		tstringTostring();
-		stringToTstring();
+		testSuite.add("copy from clipboard", &copyFromClipboard);
+		testSuite.add("copy to clipboard", &copyToClipboard);
+		testSuite.add("WinApi::ListBoxDialog", &listDialog);
+		testSuite.add("WinApi::GridDialog", &gridDialog);
+		testSuite.add("WinApi::QueryDialog", &queryDialog);
+		testSuite.add("WinApi::TreeDialog", &treeDialog);
+		testSuite.add("WinApi::SelectDirPathDialog", &selectDirPathDailog);
+		testSuite.add("WinApi::SelectFilePathDialog", &selectFilePathDailog);
+		testSuite.add("WinApi::SelectPathsDialog<WinApi::SelectorType::Directory>", &selectDirPathsDailog);
+		testSuite.add("WinApi::SelectPathsDialog<WinApi::SelectorType::File>", &selectFilePathsDailog);
+		testSuite.add("WinApi::MessageDialog", &messageDialog);
+		testSuite.add("WinApi::ShellCommand: open txt file", &shellCommand_OpenFile);
+		testSuite.add("WinApi::ShellCommand: run ctags.exe", &shellCommand_runCtags);
+		testSuite.add("WinApi::ShellCommand: run ctags.exe with help", &shellCommand_runCtagsWithHelp);
+		testSuite.add("WinApi::ShellCommand: failed execution", &shellCommand_failed);
+		testSuite.add("WinApi::Process: run ctags.exe", &executeProcess_runCtags);
+		testSuite.add("WinApi::Process: run ctags.exe with help", &executeProcess_runCtagsWithHelp);
+		testSuite.add("convert string: tstr -> str", &tstringTostring);
+		testSuite.add("convert string: str -> tstr", &stringToTstring);
+
+		if (testsNamesPattern.empty())
+			testSuite.runAll();
+		else
+			testSuite.run(testsNamesPattern);
 	}
 	catch (std::exception& e)
 	{
