@@ -37,6 +37,14 @@ public:
 	{
 		std::cout << getIndent() << p1 << p2 << std::endl;
 	}
+	void wprint(const TCHAR* p)
+	{
+		std::wcout << getWindent() << p << std::endl;
+	}
+	void wprint(const TCHAR* p1, const TCHAR* p2)
+	{
+		std::wcout << getWindent() << p1 << p2 << std::endl;
+	}
 	void testFinished()
 	{
 		removeIndent();
@@ -49,6 +57,13 @@ private:
 		std::string str;
 		for (int i = 0; i < indent; ++i)
 			str += "    ";
+		return str;
+	}
+	std::wstring getWindent()
+	{
+		std::wstring str;
+		for (int i = 0; i < indent; ++i)
+			str += TEXT("    ");
 		return str;
 	}
 
@@ -298,13 +313,29 @@ void executeProcess2()
 	out.testFinished();
 }
 
-void conversStrings()
+void tstringTostring()
 {
 	out.testStarted("TCHAR[] to std::string");
 
 	TCHAR someStr[100] = TEXT("Hello");
 	std::string outStr = WinApi::arrayToString(someStr);
-	out.print("Convertes std: ", outStr);
+	out.print("Converted std: ", outStr);
+
+	TCHAR *someStr1 = TEXT("Hello");
+	std::string outStr1 = WinApi::pointerToString<10>(someStr1);
+	out.print("Converted std: ", outStr1);
+
+	out.testFinished();
+}
+
+void stringToTstring()
+{
+	out.testStarted("std::string to TCHAR[]");
+
+	std::string inStr = "Hello";
+	TCHAR outStr[10] = TEXT("");
+	WinApi::stringToArray(inStr, outStr);
+	out.wprint(TEXT("Converted TCHAR: "), outStr);
 
 	out.testFinished();
 }
@@ -315,7 +346,7 @@ int main()
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
-		/*
+		
 		copyFromClipboard();
 		copyToClipboard();
 		listDialog();
@@ -332,8 +363,8 @@ int main()
 		shellCommanddFailed();
 		executeProcess1();
 		executeProcess2();
-		*/
-		conversStrings();
+		tstringTostring();
+		stringToTstring();
 	}
 	catch (std::exception& e)
 	{
