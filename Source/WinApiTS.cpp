@@ -5,6 +5,7 @@
 #include "CommonDialogs.hpp"
 #include "Clipboard.hpp"
 #include "WinApiShellCommand.hpp"
+#include "WinApiProcess.hpp"
 #include "WinApiLastErrorException.hpp"
 
 class Printer
@@ -38,7 +39,7 @@ public:
 	void testFinished()
 	{
 		removeIndent();
-		std::cout << getIndent() << "Finshed " << testName << std::endl;
+		std::cout << getIndent() << "Finshed " << testName << "\n" << std::endl;
 		std::cout << std::endl;
 	}
 private:
@@ -247,11 +248,6 @@ void shellCommand2()
 	WinApi::ShellCommand ctagsHelp("D:\\universal_ctags\\ctags.exe", "--help");
 	ctagsHelp.execute();
 	out.testFinished();
-
-	out.testStarted("copy file");
-	WinApi::ShellCommand notepad("cp", "d:\\test.txt d:\\test1.txt");
-	notepad.execute();
-	out.testFinished();
 }
 
 void shellCommanddFailed()
@@ -269,13 +265,45 @@ void shellCommanddFailed()
 	out.testFinished();
 }
 
+void executeProcess1()
+{
+	out.testStarted("execute ctags.exe and print output");
+
+	WinApi::Process app("D:\\universal_ctags\\ctags.exe");
+	std::string output = "[";
+	output += app.execute();
+	output += "]";
+	out.print("ctags.exe out: ", output);
+
+	out.testFinished();
+}
+
+void executeProcess2()
+{
+	out.testStarted("execute ctags.exe with help and print output");
+
+	WinApi::Process app("D:\\universal_ctags\\ctags.exe --help");
+	std::string output = "[";
+	try {
+		output += app.execute();
+		output += "]";
+		out.print("ctags.exe out: ", output);
+	}
+	catch (std::exception& e)
+	{
+		out.print("Exception: ", e.what());
+	}
+
+	out.testFinished();
+}
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main()
 {
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
-		/*
+
 		copyFromClipboard();
 		copyToClipboard();
 		listDialog();
@@ -287,10 +315,11 @@ int main()
 		selectDirPathsDailog();
 		selectFilePathsDailog();
 		messageDialog();
-		*/
 		shellCommand1();
 		shellCommand2();
 		shellCommanddFailed();
+		executeProcess1();
+		executeProcess2();
 	}
 	catch (std::exception& e)
 	{

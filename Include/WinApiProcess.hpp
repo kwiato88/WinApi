@@ -13,8 +13,11 @@ public:
 	void writeNotIneritable();
 	void put(const std::string& p_str);
 	std::string get();
+	void closeWrite();
 
 protected:
+	bool hasDataToRead();
+
 	HANDLE read;
 	HANDLE write;
 };
@@ -24,6 +27,10 @@ class ChildOut : public Pipe
 public:
 	ChildOut();
 	void apply(STARTUPINFO& p_startup);
+	void readBuffer();
+	std::string getOutput();
+private:
+	std::string output;
 };
 
 class ChildIn : public Pipe
@@ -46,6 +53,7 @@ private:
 	STARTUPINFO startupInfo;
 	PROCESS_INFORMATION processInfo;
 	ChildOut processOut;
+	ChildIn prosessIn;
 }; 
 
 }
