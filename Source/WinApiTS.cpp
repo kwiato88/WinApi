@@ -80,10 +80,19 @@ class Tests
 {
 public:
 	typedef std::function<void()> Test;
+	struct Matching
+	{
+		std::string pattern;
+	};
+	struct NotMatching
+	{
+		std::string pattern;
+	};
 	
 	void add(const std::string& p_name, Test p_test);
 	void runAll();
-	void run(const std::string& p_pattern);
+	void run(Matching p_pattern);
+	void run(NotMatching p_pattern);
 
 private:
 	struct TestUnit
@@ -128,11 +137,19 @@ bool Tests::matches(const std::string& p_name, const std::string& p_pattern)
 	return p_name.find(p_pattern) != std::string::npos;
 }
 
-void Tests::run(const std::string& p_pattern)
+void Tests::run(Matching p_pattern)
 {
-	out.print(std::string("Runing tests matching pattern ") + p_pattern + "\n");
+	out.print(std::string("Runing tests matching pattern ") + p_pattern.pattern + "\n");
 	for (const auto& test : tests)
-		if (matches(test.name, p_pattern))
+		if (matches(test.name, p_pattern.pattern))
+			run(test);
+}
+
+void Tests::run(NotMatching p_pattern)
+{
+	out.print(std::string("Runing tests not matching pattern ") + p_pattern.pattern + "\n");
+	for (const auto& test : tests)
+		if (!matches(test.name, p_pattern.pattern))
 			run(test);
 }
 
@@ -342,12 +359,44 @@ void stringToTstring()
 	out.wprint(TEXT("Converted TCHAR: "), outStr);
 }
 
+bool areParamsOk(int argc, char* argv[])
+{
+	if (argc == 1)
+		return true;
+	if (argc == 2)
+		return true;
+	if (argc == 3)
+		return std::string(argv[1]) == "not";
+	return false;
+}
+enum class RunMode
+{
+	All,
+	Matching,
+	NotMatching
+};
+
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main(int argc, char* argv[])
 {
+	if (!areParamsOk(argc, argv))
+	{
+		std::cerr << "Invalid params" << std::endl;
+		return 1;
+	}
+
 	std::string testsNamesPattern;
-	if (argc > 1)
+	RunMode mode = RunMode::All;
+	if (argc == 2)
+	{
+		mode = RunMode::Matching;
 		testsNamesPattern = argv[1];
+	}
+	if (argc == 3)
+	{
+		mode = RunMode::NotMatching;
+		testsNamesPattern = argv[2];
+	}
 
 	try
 	{
@@ -373,10 +422,12 @@ int main(int argc, char* argv[])
 		testSuite.add("convert string: tstr -> str", &tstringTostring);
 		testSuite.add("convert string: str -> tstr", &stringToTstring);
 
-		if (testsNamesPattern.empty())
+		if(mode == RunMode::All)
 			testSuite.runAll();
-		else
-			testSuite.run(testsNamesPattern);
+		if(mode == RunMode::Matching)
+			testSuite.run(Tests::Matching{ testsNamesPattern });
+		if(mode == RunMode::NotMatching)
+			testSuite.run(Tests::NotMatching{ testsNamesPattern });
 	}
 	catch (std::exception& e)
 	{
