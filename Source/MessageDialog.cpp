@@ -42,16 +42,21 @@ unsigned int toInt(MessageDialog::Buttons b)
 }
 MessageDialog::Button toButton(int b)
 {
-	if(b == IDOK)
+	switch (b)
+	{
+	case IDOK:
 		return MessageDialog::Button::Ok;
-	if(b == IDCANCEL)
+	case IDCANCEL:
 		return MessageDialog::Button::Cancel;
-	if(b == IDYES)
+	case IDYES:
 		return MessageDialog::Button::Yes;
-	if(b == IDNO)
+	case IDNO:
 		return MessageDialog::Button::No;
-	if(b == IDRETRY)
+	case IDRETRY:
 		return MessageDialog::Button::Retry;
+	default:
+		return MessageDialog::Button::Cancel;
+	}
 }
 std::string cutString(std::string p_string, size_t p_length)
 {
