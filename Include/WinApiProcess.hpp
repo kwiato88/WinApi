@@ -49,6 +49,8 @@ public:
 	void start();
 	std::string wait();
 private:
+	void useHiddenWindow();
+
 	std::string command;
 	STARTUPINFO startupInfo;
 	PROCESS_INFORMATION processInfo;

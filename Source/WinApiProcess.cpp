@@ -48,6 +48,9 @@ bool Pipe::hasDataToRead()
 
 std::string Pipe::get()
 {
+	if (!hasDataToRead())
+		return "";
+
 	DWORD readLength = 0;
 	char buff[1024];
 	bool isReadOk = false;
@@ -111,6 +114,12 @@ std::string Process::execute()
 	return wait();
 }
 
+void Process::useHiddenWindow()
+{
+	startupInfo.wShowWindow = SW_HIDE;
+	startupInfo.dwFlags |= STARTF_USESHOWWINDOW;
+}
+
 void Process::start()
 {
 	TCHAR cmd[2048] = TEXT("");
@@ -118,6 +127,7 @@ void Process::start()
 
 	processOut.apply(startupInfo);
 	prosessIn.apply(startupInfo);
+	useHiddenWindow();
 
 	if(CreateProcess(
 		NULL,	       // No module name (use command line)
@@ -138,6 +148,7 @@ void Process::start()
 
 std::string Process::wait()
 {
+	Sleep(500); // wait for process to produce some data
 	processOut.readBuffer();
 	WaitForSingleObject(processInfo.hProcess, INFINITE);
 	CloseHandle(processInfo.hProcess);
