@@ -338,6 +338,7 @@ void executeProcess_runCtags()
 	std::string output = "[";
 	output += app.execute();
 	output += "]";
+	out.print("ctags.exe returned code: ", app.exitCode());
 	out.print("ctags.exe out: ", output);
 }
 
@@ -347,6 +348,7 @@ void executeProcess_runCtagsWithHelp()
 	std::string output = "[";
 	output += app.execute();
 	output += "]";
+	out.print("ctags.exe returned code: ", app.exitCode());
 	out.print("ctags.exe out: ", output);
 }
 
@@ -356,7 +358,24 @@ void executeProcess_withoutStdOut()
 	std::string output = "[";
 	output += app.execute();
 	output += "]";
+	out.print("readtags.exe returned code: ", app.exitCode());
 	out.print("readtags.exe out: ", output);
+}
+
+void executeProcess_async()
+{
+	WinApi::Process app("D:\\universal_ctags\\ctags.exe --help");
+	app.start();
+
+	out.print("is running: ", app.isRunning());
+	out.print("code: ", app.exitCode());
+
+	std::string output = "[";
+	output += app.wait();
+	output += "]";
+	out.print("is running: ", app.isRunning());
+	out.print("code: ", app.exitCode());
+	out.print("out: ", output);
 }
 
 void tstringTostring()
@@ -445,6 +464,7 @@ int main(int argc, char* argv[])
 		testSuite.add("WinApi::Process: run ctags.exe", &executeProcess_runCtags);
 		testSuite.add("WinApi::Process: run ctags.exe with help", &executeProcess_runCtagsWithHelp);
 		testSuite.add("WinApi::Process: run readtags.exe with with no output", &executeProcess_withoutStdOut);
+		testSuite.add("WinApi::Process: run async", &executeProcess_async);
 		testSuite.add("convert string: tstr -> str", &tstringTostring);
 		testSuite.add("convert string: str -> tstr", &stringToTstring);
 

@@ -1,5 +1,6 @@
 //This code is under MIT licence, you can find the complete file here: https://github.com/kwiato88/WinApi/blob/master/LICENSE
 #include <string>
+#include <boost/optional.hpp>
 #include "WinApiTypes.hpp"
 
 namespace WinApi
@@ -48,6 +49,9 @@ public:
 	std::string execute();
 	void start();
 	std::string wait();
+	bool isRunning() const;
+	int exitCode() const;
+
 private:
 	void useHiddenWindow();
 
@@ -56,6 +60,7 @@ private:
 	PROCESS_INFORMATION processInfo;
 	ChildOut processOut;
 	ChildIn prosessIn;
+	boost::optional<int> childExitCode;
 }; 
 
 }

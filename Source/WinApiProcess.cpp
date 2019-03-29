@@ -151,11 +151,27 @@ std::string Process::wait()
 	Sleep(500); // wait to see if process will produce any data; without it peek will return 0 and no data will be read
 	processOut.readBuffer();
 	WaitForSingleObject(processInfo.hProcess, INFINITE);
+	childExitCode = exitCode();
 	CloseHandle(processInfo.hProcess);
 	CloseHandle(processInfo.hThread);
 	processOut.closeWrite();
 	processOut.readBuffer();
 	return processOut.getOutput();
+}
+
+bool Process::isRunning() const
+{
+	return exitCode() == STILL_ACTIVE;
+}
+
+int Process::exitCode() const
+{
+	if (static_cast<bool>(childExitCode))
+		return childExitCode.get();
+	DWORD code = 0;
+	if (GetExitCodeProcess(processInfo.hProcess, &code) == 0)
+		throw LastErrorException("Failed to get exit code");
+	return code;
 }
 
 }
