@@ -148,7 +148,7 @@ void Process::start()
 
 std::string Process::wait()
 {
-	Sleep(500); // wait for process to produce some data
+	Sleep(500); // wait to see if process will produce any data; without it peek will return 0 and no data will be read
 	processOut.readBuffer();
 	WaitForSingleObject(processInfo.hProcess, INFINITE);
 	CloseHandle(processInfo.hProcess);
