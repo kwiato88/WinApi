@@ -350,6 +350,15 @@ void executeProcess_runCtagsWithHelp()
 	out.print("ctags.exe out: ", output);
 }
 
+void executeProcess_withoutStdOut()
+{
+	WinApi::Process app("D:\\universal_ctags\\readtags.exe -t D:\\tags.txt dupa");
+	std::string output = "[";
+	output += app.execute();
+	output += "]";
+	out.print("readtags.exe out: ", output);
+}
+
 void tstringTostring()
 {
 	TCHAR someStr[100] = TEXT("Hello");
@@ -435,6 +444,7 @@ int main(int argc, char* argv[])
 		testSuite.add("WinApi::ShellCommand: failed execution", &shellCommand_failed);
 		testSuite.add("WinApi::Process: run ctags.exe", &executeProcess_runCtags);
 		testSuite.add("WinApi::Process: run ctags.exe with help", &executeProcess_runCtagsWithHelp);
+		testSuite.add("WinApi::Process: run readtags.exe with with no output", &executeProcess_withoutStdOut);
 		testSuite.add("convert string: tstr -> str", &tstringTostring);
 		testSuite.add("convert string: str -> tstr", &stringToTstring);
 
