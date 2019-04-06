@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <functional>
+#include <sstream>
 
 #include "CommonDialogs.hpp"
 #include "Clipboard.hpp"
@@ -412,8 +413,15 @@ enum class RunMode
 	All,
 	Matching,
 	NotMatching,
-	PrintNames
+	PrintNames,
+	Help
 };
+std::string helpText(const char* p_appName)
+{
+	std::ostringstream buff;
+	buff << "Usage: " << p_appName << " [ testNamePattern | not testNamePattern | printNames | help ]\n";
+	return buff.str();
+}
 
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 int main(int argc, char* argv[])
@@ -421,7 +429,7 @@ int main(int argc, char* argv[])
 	if (!areParamsOk(argc, argv))
 	{
 		std::cerr << "Invalid params" << std::endl;
-		std::cerr << "Usage: " << argv[0] << " [ testNamePattern | not testNamePattern | printNames ]" << std::endl;
+		std::cerr << helpText(argv[0]) << std::endl;
 		return 1;
 	}
 
@@ -436,12 +444,21 @@ int main(int argc, char* argv[])
 	{
 		mode = RunMode::PrintNames;
 	}
+	if (argc == 2 && std::string(argv[1]) == "help")
+	{
+		mode = RunMode::Help;
+	}
 	if (argc == 3)
 	{
 		mode = RunMode::NotMatching;
 		testsNamesPattern = argv[2];
 	}
 
+	if (mode == RunMode::Help)
+	{
+		std::cout << helpText(argv[0]) << std::endl;
+		return 0;
+	}
 	try
 	{
 		//hModule = WinApi::InstanceHandle(hInstance);
