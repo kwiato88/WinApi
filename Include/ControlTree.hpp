@@ -5,6 +5,7 @@
 #include <commctrl.h>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "WinApiTypes.hpp"
 #include "Control.hpp"
@@ -25,6 +26,7 @@ class Tree : public Control
 		Item addChild(const Node& p_node);
 		const void* getUserContext() const;
 		const Node* getNode() const;
+		void select() const;
 
 	private:
 		Item(const Node& p_node, const Item& p_parrent);
@@ -49,6 +51,8 @@ public:
 
 private:
 	void addItem(const Node& p_node, Item& p_parrent);
+
+	std::list<Item> items;
 };
 
 }

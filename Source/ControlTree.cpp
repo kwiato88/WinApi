@@ -44,6 +44,11 @@ const void* Tree::Item::getUserContext() const
 	return nullptr;
 }
 
+void Tree::Item::select() const
+{
+	TreeView_Select(tree, nativeItem, TVGN_CARET | TVGN_FIRSTVISIBLE);
+}
+
 TVINSERTSTRUCT Tree::Item::buildInsertStruct(const Node& p_node, HTREEITEM p_parent)
 {
 	TVITEM item;
@@ -66,9 +71,10 @@ Tree::RootItem::RootItem(Handle p_tree)
 
 void Tree::addItem(const Node& p_node, Item& p_parrent)
 {
-	auto isertedItem = p_parrent.addChild(p_node);
+	auto insertedItem = p_parrent.addChild(p_node);
+	items.push_back(insertedItem);
 	for (const Node& child : p_node.m_children)
-		addItem(child, isertedItem);
+		addItem(child, insertedItem);
 }
 
 void Tree::addRoot(const Node& p_root)
