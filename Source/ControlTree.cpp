@@ -95,5 +95,27 @@ const Node* Tree::getSelectedNode() const
 	return selectedItem.getNode();
 }
 
+std::list<Tree::Item> Tree::find(MatchNode p_predicate) const
+{
+	std::list<Item> found;
+	for (const auto& item : items)
+	{
+		const Node* node = item.getNode();
+		if (node != nullptr && p_predicate(*node))
+			found.push_back(item);
+	}
+	return found;
+}
+
+void Tree::forEachNode(NodeVisitor p_visitor) const
+{
+	for (const auto& item : items)
+	{
+		const Node* node = item.getNode();
+		if (node != nullptr)
+			p_visitor(*node);
+	}
+}
+
 }
 }

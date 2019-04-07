@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <functional>
 
 #include "WinApiTypes.hpp"
 #include "Control.hpp"
@@ -18,6 +19,7 @@ namespace Control
 
 class Tree : public Control
 {
+public:
 	class Item
 	{
 	public:
@@ -38,6 +40,7 @@ class Tree : public Control
 		TCHAR nativeText[512] = TEXT("");
 	};
 
+private:
 	class RootItem : public Item
 	{
 	public:
@@ -45,9 +48,14 @@ class Tree : public Control
 	};
 
 public:
+	typedef std::function<bool(const Node&)> MatchNode;
+	typedef std::function<void(const Node&)> NodeVisitor;
+
 	void addRoot(const Node& p_root);
 	const void* getSelectedItemContext() const;
 	const Node* getSelectedNode() const;
+	std::list<Item> find(MatchNode p_predicate) const;
+	void forEachNode(NodeVisitor p_visitor) const;
 
 private:
 	void addItem(const Node& p_node, Item& p_parrent);
