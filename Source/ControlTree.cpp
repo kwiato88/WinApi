@@ -46,7 +46,7 @@ const void* Tree::Item::getUserContext() const
 
 void Tree::Item::select() const
 {
-	TreeView_Select(tree, nativeItem, TVGN_CARET | TVGN_FIRSTVISIBLE);
+	TreeView_SelectItem(tree, nativeItem);
 }
 
 TVINSERTSTRUCT Tree::Item::buildInsertStruct(const Node& p_node, HTREEITEM p_parent)
