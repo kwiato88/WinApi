@@ -58,6 +58,7 @@ private:
 	int adjustPosY(int p_y) const;
     virtual void onInit() = 0;
 	virtual bool showContextMenu(int p_xPos, int p_yPos);
+    virtual void onClose();
 
 	const std::string m_defaultTitle;
 	const ResourceId m_resourceId;
