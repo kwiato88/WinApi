@@ -44,6 +44,11 @@ BOOL CALLBACK Dialog::DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lPara
 
 BOOL Dialog::handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam)
 {
+    if(p_msgCode == WM_CLOSE)
+    {
+        onClose();
+        return TRUE;
+    }
     if(p_msgCode == WM_COMMAND)
         return dispatchCommandMsg(p_wParam);
     if(p_msgCode == WM_NOTIFY)
@@ -168,6 +173,11 @@ Handle Dialog::getItem(ResourceId p_itemId) const
 bool Dialog::showContextMenu(int, int)
 {
 	return false;
+}
+
+void Dialog::onClose()
+{
+    close(RESULT_CANCEL);
 }
 
 } // namespace WinApi
