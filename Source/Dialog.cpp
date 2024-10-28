@@ -19,7 +19,7 @@ Dialog::Dialog(InstanceHandle p_hInstance, Handle p_parent, ResourceId p_resourc
 {
 }
 
-BOOL CALLBACK Dialog::DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK Dialog::DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     Dialog *l_dlg=reinterpret_cast<Dialog*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
     if (!l_dlg)

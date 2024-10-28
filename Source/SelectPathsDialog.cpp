@@ -87,7 +87,7 @@ void SelectPathsDialog<selector>::onAddClick()
 template <SelectorType selector>
 void SelectPathsDialog<selector>::onSelectClick()
 {
-    typedef SelectorTypeTraits<selector>::SelectorType SelectorType;
+    typedef typename SelectorTypeTraits<selector>::SelectorType SelectorType;
     std::string l_path = SelectorType(m_self).getPath(
 		std::string("Select " + SelectorTypeTraits<selector>::itemName()), m_item.getContent());
     if(!l_path.empty())

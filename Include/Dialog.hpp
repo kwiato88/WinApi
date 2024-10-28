@@ -49,7 +49,7 @@ private:
     typedef std::list<std::pair<CommandMsgMatcher, MsgHandler>> CommandHandlersContainer;
     typedef std::list<std::pair<NotifyMsgMatcher, MsgHandler>> NotifyHandlersContainer;
 
-    static BOOL CALLBACK DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+    static INT_PTR CALLBACK DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam);
     BOOL handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam);
     BOOL dispatchCommandMsg(WPARAM p_wParam);
     BOOL dispatchNotifyMsg(LPARAM p_lParam);

@@ -24,12 +24,6 @@ inline std::string charToString(const char* p_string)
 }
 
 template<std::size_t MaxSize>
-std::string arrayToString(const TCHAR (&p_string)[MaxSize])
-{
-	return pointerToString<MaxSize>(p_string);
-}
-
-template<std::size_t MaxSize>
 std::string pointerToString(const TCHAR* p_string)
 {
 #ifdef  UNICODE
@@ -40,11 +34,17 @@ std::string pointerToString(const TCHAR* p_string)
 }
 
 template<std::size_t MaxSize>
+std::string arrayToString(const TCHAR (&p_string)[MaxSize])
+{
+	return pointerToString<MaxSize>(p_string);
+}
+
+std::size_t stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize);
+
+template<std::size_t MaxSize>
 std::size_t stringToArray(const std::string& p_inStr, TCHAR(&p_outStr)[MaxSize])
 {
 	return stringToPoiner(p_inStr, p_outStr, MaxSize);
 }
-
-std::size_t stringToPoiner(const std::string& p_inStr, TCHAR* p_outStr, std::size_t p_maxSize);
 
 }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 project(WinApi)
 
@@ -38,7 +38,7 @@ target_include_directories(
     winApiUtils
     PUBLIC
     Include
-    D:/boost_1_61_0
+    C:/Users/pikwiatk/boost_1_85_0
 )
 
 add_executable(
@@ -55,7 +55,7 @@ target_include_directories(
     winApiTests
     PUBLIC
     Include
-    D:/boost_1_61_0
+    C:/Users/pikwiatk/boost_1_85_0
 )
 
 add_dependencies(

@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <commctrl.h>
 #include <functional>
+#include "WinApiTypes.hpp"
 
 namespace WinApi
 {
@@ -40,7 +41,7 @@ public:
 		: m_relatedObject(p_relatedObj){}
 	bool operator()(LPARAM p_lParam) const
 	{
-		return m_relatedObject.isOwnHandle(Handle(((LPNMHDR)p_lParam)->hwndFrom));
+		return m_relatedObject.isOwnHandle(Handle{((LPNMHDR)p_lParam)->hwndFrom});
 	}
 private:
 	const T& m_relatedObject;
@@ -60,7 +61,7 @@ public:
         : m_relatedObject(p_relatedObj), m_code(p_code), m_additionalMatcher(p_additionalMatcher) {}
     bool operator()(LPARAM p_lParam) const
     {
-        return m_relatedObject.isOwnHandle(Handle(((LPNMHDR)p_lParam)->hwndFrom))
+        return m_relatedObject.isOwnHandle(Handle{((LPNMHDR)p_lParam)->hwndFrom})
             && (((LPNMHDR)p_lParam)->code == m_code)
             && m_additionalMatcher(p_lParam);
     }

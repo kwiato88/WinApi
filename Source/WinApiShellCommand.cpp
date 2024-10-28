@@ -14,7 +14,7 @@ ShellCommand::ShellCommand(const std::string& p_path, const std::string& p_param
 
 void ShellCommand::execute()
 {
-	int code = (int)ShellExecuteA(
+	INT_PTR code = (INT_PTR)ShellExecuteA(
 		NULL, // hwnd
 		NULL, // lpOperation
 		(path.empty() ? NULL : path.c_str()), // lpFile
