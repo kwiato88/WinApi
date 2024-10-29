@@ -41,12 +41,9 @@ void Pipe::put(const std::string& p_str)
 
 bool Pipe::hasDataToRead()
 {
-	/*TODO: fix
 	DWORD leftData = 0;
-	bool isPeekOk = PeekNamedPipe(read, NULL, NULL, NULL, &leftData, NULL);
+	bool isPeekOk = PeekNamedPipe(read, NULL, 0, NULL, &leftData, NULL);
 	return isPeekOk && leftData > 0;
-	*/
-	return false;
 }
 
 std::string Pipe::get()
