@@ -32,6 +32,8 @@ add_library(
     Source/ContextMenu.cpp
     Source/WinApiShellCommand.cpp
     Source/WinApiProcess.cpp
+    Source/WinApiThread.cpp
+	Source/WinApiMutex.cpp
 )
 
 target_include_directories(

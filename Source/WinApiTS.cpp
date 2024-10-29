@@ -3,6 +3,7 @@
 #include <iostream>
 #include <functional>
 #include <sstream>
+#include <synchapi.h>
 
 #include "CommonDialogs.hpp"
 #include "Clipboard.hpp"
@@ -10,6 +11,8 @@
 #include "WinApiProcess.hpp"
 #include "WinApiLastErrorException.hpp"
 #include "StringConversion.hpp"
+#include "WinApiThread.hpp"
+#include "WinApiMutex.hpp"
 
 WinApi::InstanceHandle hModule;
 
@@ -398,6 +401,63 @@ void stringToTstring()
 	out.wprint(TEXT("Converted TCHAR: "), outStr);
 }
 
+void printInts()
+{
+	for(int i=0; i<10; ++i)
+	{
+		std::cout << i;
+		Sleep(100);
+	}
+	std::cout << std::endl;
+}
+void printChars()
+{
+	const char* chars = "abcdeghijk";
+	for(int i=0; i<10; ++i)
+	{
+		Sleep(100);
+		std::cout << chars[i];
+	}
+	std::cout << std::endl;
+}
+
+void runThreads()
+{
+	WinApi::Thread a(&printInts), b(&printChars);
+	a.start();
+	b.start();
+	a.join();
+	b.join();
+}
+
+void terminateThread()
+{
+	WinApi::Thread a(&printInts);
+	a.start();
+	Sleep(300);
+	a.stop();
+}
+
+void lockedPrintInts(WinApi::Mutex& mutex)
+{
+	WinApi::ScopedLock lock(mutex);
+	printInts();
+}
+void lockedPrintChars(WinApi::Mutex& mutex)
+{
+	WinApi::ScopedLock lock(mutex);
+	printChars();
+}
+void lockUnlockMutex()
+{
+	WinApi::Mutex mutex;
+	WinApi::Thread a([&](){lockedPrintInts(mutex);}), b([&](){lockedPrintChars(mutex);});
+	a.start();
+	b.start();
+	a.join();
+	b.join();
+}
+
 bool areParamsOk(int argc, char* argv[])
 {
 	if (argc == 1)
@@ -484,7 +544,9 @@ int main(int argc, char* argv[])
 		testSuite.add("WinApi::Process: run async", &executeProcess_async);
 		testSuite.add("convert string: tstr -> str", &tstringTostring);
 		testSuite.add("convert string: str -> tstr", &stringToTstring);
-
+		testSuite.add("WinApi::Thread: start threads", &runThreads);
+		testSuite.add("WinApi::Thread: stop threads", &terminateThread);
+		testSuite.add("WinApi::Thread: use mutex", &lockUnlockMutex);
 		if (mode == RunMode::PrintNames)
 			testSuite.names();
 		if(mode == RunMode::All)
