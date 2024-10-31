@@ -16,6 +16,7 @@ public:
     void start();
     void join();
     void stop();
+	bool isRunning() const;
 
 private:
     static unsigned __stdcall threadFunction(void* p_this);

@@ -70,23 +70,27 @@ MessageDialog::MessageDialog(Handle p_parent)
 	: parent(p_parent), icon(Icon::None), buttons(Buttons::Ok)
 {}
 
-void MessageDialog::with(Icon i)
+MessageDialog& MessageDialog::with(Icon i)
 {
 	icon = i;
+	return *this;
 }
 
-void MessageDialog::with(Buttons b)
+MessageDialog& MessageDialog::with(Buttons b)
 {
 	buttons = b;
+	return *this;
 }
 
-void MessageDialog::withTitle(const std::string& t)
+MessageDialog& MessageDialog::withTitle(const std::string& t)
 {
 	title = t;
+	return *this;
 }
-void MessageDialog::withContent(const std::string& c)
+MessageDialog& MessageDialog::withContent(const std::string& c)
 {
 	content = c;
+	return *this;
 }
 
 MessageDialog::Button MessageDialog::show()

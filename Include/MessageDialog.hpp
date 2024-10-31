@@ -35,10 +35,10 @@ public:
 	};
 
 	MessageDialog(Handle p_parent);
-	void withTitle(const std::string&);
-	void withContent(const std::string&);
-	void with(Icon);
-	void with(Buttons);
+	MessageDialog& withTitle(const std::string&);
+	MessageDialog& withContent(const std::string&);
+	MessageDialog& with(Icon);
+	MessageDialog& with(Buttons);
 	Button show();
 
 private:

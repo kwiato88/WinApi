@@ -271,25 +271,25 @@ void selectFilePathsDailog()
 void messageDialog()
 {
 	out.print("message with warn, retry and cancel");
-	WinApi::MessageDialog message{ WinApi::Handle() };
-	message.withTitle("title");
-	message.withContent("something nice");
-	message.with(WinApi::MessageDialog::Icon::Warn);
-	message.with(WinApi::MessageDialog::Buttons::RetryCancel);
-	auto code = message.show();
+	auto code = WinApi::MessageDialog{ WinApi::Handle() }
+	.withTitle("title")
+	.withContent("something nice")
+	.with(WinApi::MessageDialog::Icon::Warn)
+	.with(WinApi::MessageDialog::Buttons::RetryCancel)
+	.show();
 	out.print("return code: ", WinApi::toStr(code));
 
 	out.print("message with default params");
-	WinApi::MessageDialog message2{ WinApi::Handle() };
-	code = message2.show();
+	code = WinApi::MessageDialog{ WinApi::Handle() }
+	.show();
 	out.print("return code: ", WinApi::toStr(code));
 
 	out.print("message with ok");
-	WinApi::MessageDialog message3{ WinApi::Handle() };
-	message3.withTitle("title");
-	message3.withContent("something nice");
-	message3.with(WinApi::MessageDialog::Buttons::Ok);
-	code = message3.show();
+	code = WinApi::MessageDialog{ WinApi::Handle() }
+	.withTitle("title")
+	.withContent("something nice")
+	.with(WinApi::MessageDialog::Buttons::Ok)
+	.show();
 	out.print("return code: ", WinApi::toStr(code));
 }
 

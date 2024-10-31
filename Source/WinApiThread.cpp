@@ -37,6 +37,12 @@ void Thread::join()
 {
     WaitForSingleObject(m_thread, INFINITE);
     CloseHandle(m_thread);
+    m_running = false;
+}
+
+bool Thread::isRunning() const
+{
+    return m_running;
 }
 
 void Thread::stop()
