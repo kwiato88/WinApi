@@ -24,6 +24,7 @@ add_library(
     Source/ControlCheckBox.cpp
     Source/ControlTree.cpp
     Source/ControlText.cpp
+    Source/ControlList.cpp
     Source/WinApiDirPathGetter.cpp
     Source/WinApiFilePathGetter.cpp
     Source/WinApiLastErrorException.cpp
