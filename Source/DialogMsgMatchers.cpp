@@ -6,25 +6,34 @@ namespace WinApi
 namespace MsgMatchers
 {
 
-MsgCode::MsgCode(WORD p_expectedMsgCode)
+Message::Message(UINT p_msgId)
+    : m_msgId(p_msgId)
+{}
+
+bool Message::operator()(UINT p_msgId, WPARAM, LPARAM) const
+{
+    return p_msgId == m_msgId;
+}
+
+CmdCode::CmdCode(WORD p_expectedMsgCode)
     : m_msgCode(p_expectedMsgCode)
 {}
 
-bool MsgCode::operator()(UINT p_msgId, WPARAM p_wParam, LPARAM) const
+bool CmdCode::operator()(UINT p_msgId, WPARAM p_wParam, LPARAM) const
 {
     return p_msgId == WM_COMMAND && m_msgCode == LOWORD(p_wParam);
 }
 
-MsgCode ButtonClick(WORD p_buttonId)
+CmdCode ButtonClick(WORD p_buttonId)
 {
-	return MsgCode(p_buttonId);
+	return CmdCode(p_buttonId);
 }
 
-MsgCodeAndValue::MsgCodeAndValue(WORD p_expecdedMsgCode, WORD p_expectedMsgValue)
+CmdCodeAndValue::CmdCodeAndValue(WORD p_expecdedMsgCode, WORD p_expectedMsgValue)
     : m_msgCode(p_expecdedMsgCode), m_msgValue(p_expectedMsgValue)
 {}
 
-bool MsgCodeAndValue::operator()(UINT p_msgId, WPARAM p_wParam, LPARAM) const
+bool CmdCodeAndValue::operator()(UINT p_msgId, WPARAM p_wParam, LPARAM) const
 {
     return p_msgId == WM_COMMAND && m_msgCode == LOWORD(p_wParam) && m_msgValue == HIWORD(p_wParam);
 }

@@ -63,8 +63,8 @@ ListBoxDialog::ListBoxDialog(
 {
     registerHandler(MsgMatchers::ButtonClick(IDOK),     std::bind(&ListBoxDialog::onOkClick, this));
     registerHandler(MsgMatchers::ButtonClick(IDCANCEL), std::bind(&ListBoxDialog::onCancleClick, this));
-    registerHandler(MsgMatchers::MsgCodeAndValue(ID_LIST_BOX, LBN_SELCHANGE), std::bind(&ListBoxDialog::onListUpdate, this));
-    registerHandler(MsgMatchers::MsgCodeAndValue(ID_LIST_BOX, LBN_DBLCLK),    std::bind(&ListBoxDialog::onListDoubleClick, this));
+    registerHandler(MsgMatchers::CmdCodeAndValue(ID_LIST_BOX, LBN_SELCHANGE), std::bind(&ListBoxDialog::onListUpdate, this));
+    registerHandler(MsgMatchers::CmdCodeAndValue(ID_LIST_BOX, LBN_DBLCLK),    std::bind(&ListBoxDialog::onListDoubleClick, this));
 }
 
 void ListBoxDialog::onInit()

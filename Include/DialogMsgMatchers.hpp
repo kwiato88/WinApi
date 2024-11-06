@@ -14,21 +14,30 @@ namespace MsgMatchers
 
 using Matcher = std::function<bool(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam)>;
 
-class MsgCode
+class Message
 {
 public:
-    MsgCode(WORD p_expectedMsgCode);
+    Message(UINT p_msgId);
+    bool operator()(UINT p_msgId, WPARAM, LPARAM) const;
+private:
+    UINT m_msgId;
+};
+
+class CmdCode
+{
+public:
+    CmdCode(WORD p_expectedMsgCode);
     bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
 private:
     WORD m_msgCode;
 };
 
-MsgCode ButtonClick(WORD p_buttonId);
+CmdCode ButtonClick(WORD p_buttonId);
 
-class MsgCodeAndValue
+class CmdCodeAndValue
 {
 public:
-    MsgCodeAndValue(WORD p_expecdedMsgCode, WORD p_expectedMsgValue);
+    CmdCodeAndValue(WORD p_expecdedMsgCode, WORD p_expectedMsgValue);
     bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
 private:
     WORD m_msgCode;
