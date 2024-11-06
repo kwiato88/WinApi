@@ -61,5 +61,14 @@ bool NotifyCode::operator()(UINT p_msgId, WPARAM, LPARAM p_lParam) const
     return p_msgId == WM_NOTIFY && ((LPNMHDR)p_lParam)->code == m_code;
 }
 
+MsgKeyDown::MsgKeyDown(WPARAM p_keyCode)
+    : m_keyCode(p_keyCode)
+{}
+
+bool MsgKeyDown::operator()(UINT p_msgId, WPARAM p_wParam, LPARAM) const
+{
+    return p_msgId == WM_KEYDOWN && m_keyCode == p_wParam;
+}
+
 } // namespace MsgMatchers
 } // namespace WinApi

@@ -34,6 +34,10 @@ void Control::setFocus()
 {
 	SetFocus(self);
 }
+bool Control::isFocused() const
+{
+	return GetFocus() == self;
+}
 bool Control::isOwnHandle(Handle p_handle) const
 {
 	return self == p_handle;

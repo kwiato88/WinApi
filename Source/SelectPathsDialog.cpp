@@ -41,7 +41,7 @@ SelectPathsDialog<selector>::SelectPathsDialog(
     registerHandler(MsgMatchers::ButtonClick(ID_ADD),    std::bind(&SelectPathsDialog::onAddClick, this));
     registerHandler(MsgMatchers::ButtonClick(ID_SELECT), std::bind(&SelectPathsDialog::onSelectClick, this));
     registerHandler(MsgMatchers::ButtonClick(ID_DELETE), std::bind(&SelectPathsDialog::onDeleteClick, this));
-    registerHandler(MsgMatchers::KeyDown(m_itemsControl, VK_DELETE), std::bind(&SelectPathsDialog::onDeleteClick, this));
+    registerHandler(MsgMatchers::NotifyKeyDown(m_itemsControl, VK_DELETE), std::bind(&SelectPathsDialog::onDeleteClick, this));
 }
 
 template <SelectorType selector>

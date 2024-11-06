@@ -90,13 +90,13 @@ Matcher DoubleClick(const T& p_relatedObj)
 }
 
 template<typename T>
-Matcher AnyKeyDown(const T& p_relatedObj)
+Matcher NotifyAnyKeyDown(const T& p_relatedObj)
 {
     return AllOf({notifyFromObject(p_relatedObj), NotifyCode(LVN_KEYDOWN)});
 }
 
 template<typename T>
-Matcher KeyDown(const T& p_relatedObj, WORD p_keyCode)
+Matcher NotifyKeyDown(const T& p_relatedObj, WORD p_keyCode)
 {
     return AllOf({
                notifyFromObject(p_relatedObj),
@@ -106,6 +106,35 @@ Matcher KeyDown(const T& p_relatedObj, WORD p_keyCode)
                     return (((LPNMLVKEYDOWN)p_lParam)->wVKey == p_keyCode);
                 }
             });
+}
+
+class MsgKeyDown
+{
+public:
+    MsgKeyDown(WPARAM p_keyCode);
+    bool operator()(UINT p_msgId, WPARAM, LPARAM p_lParam) const;
+private:
+    WPARAM m_keyCode;
+};
+
+template<typename T>
+class Focused
+{
+public:
+    Focused(const T& p_relatedObj)
+        : m_relatedObject(p_relatedObj){}
+    bool operator()(UINT, WPARAM, LPARAM) const
+    {
+        return m_relatedObject.isFocused();
+    }
+private:
+    const T& m_relatedObject;
+};
+
+template <typename ControlT>
+Matcher MsgKeyDownOnControl(const ControlT& p_control, WPARAM p_keyCode)
+{
+    return AllOf({Focused<ControlT>(p_control), MsgKeyDown(p_keyCode)});
 }
 
 } // namespace MsgMatchers

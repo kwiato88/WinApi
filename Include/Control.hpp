@@ -15,6 +15,7 @@ public:
 	Control& operator=(const Control&) = delete;
 	void init(Handle p_self);
 	void setFocus();
+	bool isFocused() const;
 	bool isOwnHandle(Handle p_handle) const;
 	bool isWithin(int p_xPos, int p_yPos) const;
 
