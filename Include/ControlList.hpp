@@ -21,7 +21,12 @@ public:
     int selectedIndex() const;
     void selectIndex(int p_index);
     std::string selectedItem() const;
+    std::string getItem(int p_index) const;
+    void setItem(int p_index, const std::string& p_item);
     int size() const;
+    void scrollToLine(int p_lineNum);
+    void scrollToBottom();
+    void scrollToTop();
 };
 
 }

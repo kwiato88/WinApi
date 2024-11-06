@@ -54,12 +54,42 @@ std::string List::selectedItem() const
     return arrayToString(l_itemString);
 }
 
+std::string List::getItem(int p_index) const
+{
+    TCHAR l_itemString[1024];
+    SendMessage(self, LB_GETTEXT, p_index, (LPARAM)l_itemString);
+    return arrayToString(l_itemString);
+}
+
+void List::setItem(int p_index, const std::string& p_item)
+{
+    TCHAR l_itemString[1024];
+    stringToArray(p_item, l_itemString);
+    SendMessage(self, LB_DELETESTRING, p_index, 0);
+    SendMessage(self, LB_INSERTSTRING, p_index, (LPARAM)l_itemString);
+}
+
 int List::size() const
 {
     auto length = SendMessage(self, LB_GETCOUNT, 0, 0);
     if(length == LB_ERR)
         return -1;
     return length;
+}
+
+void List::scrollToLine(int p_lineNum)
+{
+    SendMessage(self, LB_SETTOPINDEX, p_lineNum, 0);
+}
+
+void List::scrollToBottom()
+{
+    scrollToLine(size() - 1);
+}
+
+void List::scrollToTop()
+{
+    scrollToLine(0);
 }
 
 }

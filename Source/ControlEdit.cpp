@@ -35,5 +35,20 @@ int Edit::getLineLength(int p_lineNum) const
 	return Edit_LineLength(self, p_lineNum);
 }
 
+void Edit::scrollToBottom()
+{
+	Edit_Scroll(self, getLineCount(), 0);
+}
+
+int Edit::getLineCount() const
+{
+	return Edit_GetLineCount(self);
+}
+
+void Edit::scrollLines(int p_lineNum)
+{
+	SendMessage(self, EM_LINESCROLL, p_lineNum, 0);
+}
+
 }
 }
