@@ -14,8 +14,7 @@ namespace WinApi
 class Dialog
 {
 public:
-    typedef std::function<bool(WORD p_msgCode, WORD p_msgValue)> CommandMsgMatcher;
-    typedef std::function<bool(LPARAM p_lParam)> NotifyMsgMatcher;
+    typedef std::function<bool(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam)> MsgMatcher;
     typedef std::function<void()> MsgHandler;
 	
 	static const int RESULT_OK = 2;
@@ -32,8 +31,7 @@ public:
     int show();
 
 protected:
-    void registerHandler(CommandMsgMatcher p_matcher, MsgHandler p_handler);
-    void registerHandler(NotifyMsgMatcher p_matcher, MsgHandler p_handler);
+    void registerHandler(MsgMatcher p_matcher, MsgHandler p_handler);
 
 	void setTitle(const std::string& p_title);
     void close(int p_returnCode);
@@ -46,13 +44,11 @@ protected:
 	Handle m_self;
 
 private:
-    typedef std::list<std::pair<CommandMsgMatcher, MsgHandler>> CommandHandlersContainer;
-    typedef std::list<std::pair<NotifyMsgMatcher, MsgHandler>> NotifyHandlersContainer;
+    typedef std::list<std::pair<MsgMatcher, MsgHandler>> HandlersContainer;
 
     static INT_PTR CALLBACK DialogFun(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam);
     BOOL handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam);
-    BOOL dispatchCommandMsg(WPARAM p_wParam);
-    BOOL dispatchNotifyMsg(LPARAM p_lParam);
+    BOOL dispatchMessage(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam);
 	BOOL handleContextMenuMsg(LPARAM p_lParam);
 	int adjustPosX(int p_x) const;
 	int adjustPosY(int p_y) const;
@@ -62,8 +58,7 @@ private:
 
 	const std::string m_defaultTitle;
 	const ResourceId m_resourceId;
-    CommandHandlersContainer m_commandMsgHandlers;
-    NotifyHandlersContainer m_notifyMsgHandlers;
+    HandlersContainer m_msgHandlers;
 };
 
 } // namespace WinApi

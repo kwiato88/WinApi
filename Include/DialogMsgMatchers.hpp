@@ -12,11 +12,13 @@ namespace WinApi
 namespace MsgMatchers
 {
 
+using Matcher = std::function<bool(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam)>;
+
 class MsgCode
 {
 public:
     MsgCode(WORD p_expectedMsgCode);
-    bool operator()(WORD p_msgCode, WORD p_msgValue) const;
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
 private:
     WORD m_msgCode;
 };
@@ -27,24 +29,34 @@ class MsgCodeAndValue
 {
 public:
     MsgCodeAndValue(WORD p_expecdedMsgCode, WORD p_expectedMsgValue);
-    bool operator()(WORD p_msgCode, WORD p_msgValue) const;
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
 private:
     WORD m_msgCode;
     WORD m_msgValue;
+};
+
+class AllOf
+{
+public:
+    AllOf(std::initializer_list<Matcher> p_matchers);
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
+private:
+    std::vector<Matcher> m_matchers;
 };
 
 template <typename T>
 class NotifyFromObject
 {
 public:
-	NotifyFromObject(const T& p_relatedObj)
-		: m_relatedObject(p_relatedObj){}
-	bool operator()(LPARAM p_lParam) const
-	{
-		return m_relatedObject.isOwnHandle(Handle{((LPNMHDR)p_lParam)->hwndFrom});
-	}
+    NotifyFromObject(const T& p_relatedObj)
+        : m_relatedObject(p_relatedObj){}
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const
+    {
+        return p_msgId == WM_NOTIFY
+            && m_relatedObject.isOwnHandle(Handle{((LPNMHDR)p_lParam)->hwndFrom});
+    }
 private:
-	const T& m_relatedObject;
+    const T& m_relatedObject;
 };
 
 template<typename T>
@@ -53,44 +65,38 @@ NotifyFromObject<T> notifyFromObject(const T& p_relatedObject)
 	return NotifyFromObject<T>(p_relatedObject);
 }
 
-template <typename T>
-class NotifyFromObjectWithCode
+class NotifyCode
 {
 public:
-    NotifyFromObjectWithCode(const T& p_relatedObj, UINT p_code, std::function<bool(LPARAM)> p_additionalMatcher)
-        : m_relatedObject(p_relatedObj), m_code(p_code), m_additionalMatcher(p_additionalMatcher) {}
-    bool operator()(LPARAM p_lParam) const
-    {
-        return m_relatedObject.isOwnHandle(Handle{((LPNMHDR)p_lParam)->hwndFrom})
-            && (((LPNMHDR)p_lParam)->code == m_code)
-            && m_additionalMatcher(p_lParam);
-    }
+    NotifyCode(UINT p_code);
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const;
 private:
-    const T& m_relatedObject;
     UINT m_code;
-    std::function<bool(LPARAM)> m_additionalMatcher;
 };
 
 template<typename T>
-NotifyFromObjectWithCode<T> DoubleClick(const T& p_relatedObj)
+Matcher DoubleClick(const T& p_relatedObj)
 {
-    return NotifyFromObjectWithCode<T>(p_relatedObj, NM_DBLCLK, [](LPARAM){return true;});
+    return AllOf({notifyFromObject(p_relatedObj), NotifyCode(NM_DBLCLK)});
 }
 
 template<typename T>
-NotifyFromObjectWithCode<T> KeyDown(const T& p_relatedObj, WORD p_keyCode)
+Matcher AnyKeyDown(const T& p_relatedObj)
 {
-    return NotifyFromObjectWithCode<T>(p_relatedObj, LVN_KEYDOWN,
-        [=](LPARAM p_lparam)
-        {
-            return (((LPNMLVKEYDOWN)p_lparam)->wVKey == p_keyCode);
-        });
+    return AllOf({notifyFromObject(p_relatedObj), NotifyCode(LVN_KEYDOWN)});
 }
 
 template<typename T>
-NotifyFromObjectWithCode<T> AnyKeyDown(const T& p_relatedObj)
+Matcher KeyDown(const T& p_relatedObj, WORD p_keyCode)
 {
-	return NotifyFromObjectWithCode<T>(p_relatedObj, LVN_KEYDOWN, [](LPARAM p_lparam){return true;});
+    return AllOf({
+               notifyFromObject(p_relatedObj),
+               NotifyCode(LVN_KEYDOWN),
+               [=](UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam)
+                {
+                    return (((LPNMLVKEYDOWN)p_lParam)->wVKey == p_keyCode);
+                }
+            });
 }
 
 } // namespace MsgMatchers

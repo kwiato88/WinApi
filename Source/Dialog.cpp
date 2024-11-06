@@ -49,20 +49,16 @@ BOOL Dialog::handleDialogMsg(UINT p_msgCode, WPARAM p_wParam, LPARAM p_lParam)
         onClose();
         return TRUE;
     }
-    if(p_msgCode == WM_COMMAND)
-        return dispatchCommandMsg(p_wParam);
-    if(p_msgCode == WM_NOTIFY)
-        return dispatchNotifyMsg(p_lParam);
 	if (p_msgCode == WM_CONTEXTMENU)
 		return handleContextMenuMsg(p_lParam);
-    return FALSE;
+    return dispatchMessage(p_msgCode, p_wParam, p_lParam);
 }
 
-BOOL Dialog::dispatchCommandMsg(WPARAM p_wParam)
+BOOL Dialog::dispatchMessage(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam)
 {
-    for(const auto& handler : m_commandMsgHandlers)
+    for(const auto& handler : m_msgHandlers)
     {
-        if(handler.first(LOWORD(p_wParam), HIWORD(p_wParam)))
+        if(handler.first(p_msgId, p_wParam, p_lParam))
         {
             handler.second();
             return TRUE;
@@ -100,37 +96,19 @@ BOOL Dialog::handleContextMenuMsg(LPARAM p_lParam)
 	}
 	catch (Exception& e)
 	{
-		MessageDialog dlg(m_self);
-		dlg.withTitle("Error");
-		dlg.withContent(std::string("Filed to execute context menu. ") + e.what());
-		dlg.with(MessageDialog::Icon::Error);
-		dlg.with(MessageDialog::Buttons::Ok);
-		dlg.show();
+		MessageDialog{m_self}
+		.withTitle("Error")
+		.withContent(std::string("Filed to execute context menu. ") + e.what())
+		.with(MessageDialog::Icon::Error)
+		.with(MessageDialog::Buttons::Ok)
+		.show();
 		return FALSE;
 	}
 }
 
-void Dialog::registerHandler(CommandMsgMatcher p_matcher, MsgHandler p_handler)
+void Dialog::registerHandler(MsgMatcher p_matcher, MsgHandler p_handler)
 {
-    m_commandMsgHandlers.push_back(std::make_pair(p_matcher, p_handler));
-}
-
-void Dialog::registerHandler(NotifyMsgMatcher p_matcher, MsgHandler p_handler)
-{
-    m_notifyMsgHandlers.push_back(std::make_pair(p_matcher, p_handler));
-}
-
-BOOL Dialog::dispatchNotifyMsg(LPARAM p_lParam)
-{
-    for(const auto& handler : m_notifyMsgHandlers)
-    {
-        if(handler.first(p_lParam))
-        {
-            handler.second();
-            return TRUE;
-        }
-    }
-    return FALSE;
+    m_msgHandlers.push_back(std::make_pair(p_matcher, p_handler));
 }
 
 int Dialog::show()
