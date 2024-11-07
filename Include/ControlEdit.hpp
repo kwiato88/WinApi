@@ -16,7 +16,9 @@ class Edit : public Control
 public:
 	std::string getContent() const;
 	void setContent(const std::string& p_content);
+	void appendContent(const std::string& p_content);
 	void setSelection(int p_begin, int p_end);
+	int getContentLength() const;
 	int getLineLength(int p_lineNum) const;
 	void scrollToBottom();
 	void scrollLines(int p_lineNum);

@@ -25,9 +25,23 @@ void Edit::setContent(const std::string& p_content)
 	Edit_SetText(self, content);
 }
 
+void Edit::appendContent(const std::string& p_content)
+{
+    int nLength = getContentLength(); 
+    setSelection(nLength, nLength);
+    TCHAR content[1024] = TEXT("");
+    stringToArray(p_content, content);
+    Edit_ReplaceSel(self, content);
+}
+
 void Edit::setSelection(int p_begin, int p_end)
 {
 	Edit_SetSel(self, p_begin, p_end);
+}
+
+int Edit::getContentLength() const
+{
+	return Edit_GetTextLength(self);
 }
 
 int Edit::getLineLength(int p_lineNum) const
