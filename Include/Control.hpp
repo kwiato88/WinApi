@@ -18,6 +18,8 @@ public:
 	bool isFocused() const;
 	bool isOwnHandle(Handle p_handle) const;
 	bool isWithin(int p_xPos, int p_yPos) const;
+	void addStyle(DWORD p_style);
+	void removeStyle(DWORD p_style);
 
 protected:
 	Control();

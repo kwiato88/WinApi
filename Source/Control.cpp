@@ -68,5 +68,15 @@ void Control::init(Handle p_self)
 	self = p_self;
 }
 
+void Control::addStyle(DWORD p_style)
+{
+	SetWindowLongPtr(self, GWL_STYLE, GetWindowLongPtr(self, GWL_STYLE) | p_style);
+}
+
+void Control::removeStyle(DWORD p_style)
+{
+	SetWindowLongPtr(self, GWL_STYLE, GetWindowLongPtr(self, GWL_STYLE) & ~p_style);
+}
+
 }
 }

@@ -64,5 +64,15 @@ void Edit::scrollLines(int p_lineNum)
 	SendMessage(self, EM_LINESCROLL, p_lineNum, 0);
 }
 
+void Edit::acceptNewLine()
+{
+	addStyle(ES_WANTRETURN);
+}
+
+void Edit::dontAcceptNewLine()
+{
+	removeStyle(ES_WANTRETURN);
+}
+
 }
 }

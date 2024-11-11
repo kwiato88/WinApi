@@ -23,6 +23,8 @@ public:
 	void scrollToBottom();
 	void scrollLines(int p_lineNum);
 	int getLineCount() const;
+	void acceptNewLine();
+	void dontAcceptNewLine();
 };
 
 }
