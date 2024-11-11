@@ -92,5 +92,27 @@ void List::scrollToTop()
     scrollToLine(0);
 }
 
+template<typename ControlT>
+class ListKeyDownMatcher
+{
+public:
+    ListKeyDownMatcher(WORD p_keyCode, const ControlT& p_relatedObj)
+        : m_keyCode(p_keyCode), m_relatedObj(p_relatedObj) {}
+    bool operator()(UINT p_msgId, WPARAM p_wParam, LPARAM p_lParam) const
+    {
+        return p_msgId == WM_VKEYTOITEM
+            && LOWORD(p_wParam) == m_keyCode
+            && m_relatedObj.isOwnHandle(Handle{(HWND)(p_lParam)});
+    }
+private:
+    WORD m_keyCode;
+    const ControlT& m_relatedObj;
+};
+
+WinApi::MsgMatchers::Matcher List::KeyDown(WORD p_keyCode) const
+{
+    return ListKeyDownMatcher<List>{p_keyCode, *this};
+}
+
 }
 }

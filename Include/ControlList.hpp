@@ -6,6 +6,7 @@
 #include <vector>
 #include "WinApiTypes.hpp"
 #include "Control.hpp"
+#include "DialogMsgMatchers.hpp"
 
 namespace WinApi
 {
@@ -27,6 +28,8 @@ public:
     void scrollToLine(int p_lineNum);
     void scrollToBottom();
     void scrollToTop();
+
+    WinApi::MsgMatchers::Matcher KeyDown(WORD p_keyCode) const;
 };
 
 }
